@@ -3,7 +3,7 @@
 // Example: https://demo-backend.onrender.com
 
 const API_URL = import.meta.env.PROD 
-  ? "https://YOUR-BACKEND-NAME.onrender.com"  // ← Replace with your Render URL
+  ? "https://demo-project-td6f.onrender.com"
   : "http://localhost:5000";
 
 export default API_URL;

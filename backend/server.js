@@ -9,8 +9,13 @@ const app = express();
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Allow any localhost origin
-      if (!origin || origin.startsWith("http://localhost:")) {
+      // Allow localhost and Vercel frontend
+      const allowedOrigins = [
+        "http://localhost:5173",
+        "http://localhost:3000",
+        "https://demo-project-elru.vercel.app"
+      ];
+      if (!origin || allowedOrigins.includes(origin) || origin.startsWith("http://localhost:")) {
         callback(null, true);
       } else {
         callback(new Error("Not allowed by CORS"));
