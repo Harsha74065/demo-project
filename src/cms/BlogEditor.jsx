@@ -519,7 +519,12 @@ export default function BlogEditor() {
   const fetchBlog = async () => {
     setLoadingData(true);
     try {
-      const response = await fetch(`${API_URL}/api/blogs/${id}`);
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${API_URL}/api/blogs/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (!response.ok) {
         throw new Error("Failed to fetch blog");
@@ -595,8 +600,12 @@ export default function BlogEditor() {
         formData.append("imageUrl", existingImageUrl);
       }
 
+      const token = localStorage.getItem("token");
       const response = await fetch(url, {
         method,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
         body: formData, // ❗ DO NOT set Content-Type
       });
 

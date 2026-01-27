@@ -10,33 +10,30 @@ const stripHtml = (html) => {
   return tmp.textContent || tmp.innerText || "";
 };
 
-export default function CMSPage() {
+export default function CMSPage({ user }) {
   const navigate = useNavigate();
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const loadBlogs = async () => {
-      try {
-        const response = await fetch(`${API_URL}/api/blogs`);
-        const data = await response.json();
-        setBlogs(data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching blogs:", error);
-        setLoading(false);
-      }
-    };
-    loadBlogs();
+    fetchBlogs();
   }, []);
 
   const fetchBlogs = async () => {
     try {
-      const response = await fetch(`${API_URL}/api/blogs`);
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${API_URL}/api/blogs`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const data = await response.json();
-      setBlogs(data);
+      setBlogs(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error("Error fetching blogs:", error);
+      setBlogs([]);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -44,19 +41,45 @@ export default function CMSPage() {
     if (!window.confirm(`Are you sure you want to delete "${title}"?`)) return;
 
     try {
+      const token = localStorage.getItem("token");
       const response = await fetch(`${API_URL}/api/blogs/${id}`, {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       if (response.ok) {
-        alert("Blog deleted successfully! ✅");
+        alert("Blog deleted successfully!");
         fetchBlogs();
       } else {
-        alert("Failed to delete blog");
+        const data = await response.json();
+        alert(data.message || "Failed to delete blog");
       }
     } catch (error) {
       console.error("Error deleting blog:", error);
-      alert("Failed to delete blog. Make sure backend is running!");
+      alert("Failed to delete blog");
+    }
+  };
+
+  const handleTogglePublish = async (id) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${API_URL}/api/blogs/${id}/publish`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        fetchBlogs();
+      } else {
+        const data = await response.json();
+        alert(data.message || "Failed to update blog");
+      }
+    } catch (error) {
+      console.error("Error toggling publish:", error);
     }
   };
 
@@ -71,22 +94,42 @@ export default function CMSPage() {
   return (
     <div className="cms-page">
       <h1>Content Management System</h1>
-      <p>Manage blogs and website content</p>
+      <p>
+        {user?.role === "admin" 
+          ? "Manage all blogs and website content" 
+          : "Manage your blogs and website content"}
+      </p>
 
-      <button
-        className="primary-btn"
-        onClick={() => navigate("/cms/editor")}
-        style={{
-          marginBottom: "16px",
-          background: "#1f2937",
-          color: "#fff",
-          borderRadius: "6px",
-          border: "none",
-          padding: "8px 14px",
-        }}
-      >
-        + Create New Blog
-      </button>
+      <div style={{ display: "flex", gap: "12px", marginBottom: "16px" }}>
+        <button
+          className="primary-btn"
+          onClick={() => navigate("/cms/editor")}
+          style={{
+            background: "#1f2937",
+            color: "#fff",
+            borderRadius: "6px",
+            border: "none",
+            padding: "8px 14px",
+          }}
+        >
+          + Create New Blog
+        </button>
+        <a
+          href="/blogs"
+          target="_blank"
+          style={{
+            background: "#e0f2fe",
+            color: "#0369a1",
+            borderRadius: "6px",
+            border: "none",
+            padding: "8px 14px",
+            textDecoration: "none",
+            fontSize: "14px",
+          }}
+        >
+          View Public Blog Page
+        </a>
+      </div>
 
       <div
         style={{
@@ -101,7 +144,7 @@ export default function CMSPage() {
           fontWeight: "600",
           marginBottom: "8px"
         }}>
-          Blogs
+          {user?.role === "admin" ? "All Blogs" : "My Blogs"}
         </div>
 
         {blogs.length === 0 ? (
@@ -127,8 +170,27 @@ export default function CMSPage() {
                   boxShadow: "0 2px 10px rgba(15, 23, 42, 0.08)",
                   display: "flex",
                   flexDirection: "column",
+                  position: "relative",
                 }}
               >
+                {/* Published Badge */}
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "10px",
+                    right: "10px",
+                    padding: "4px 8px",
+                    borderRadius: "4px",
+                    fontSize: "11px",
+                    fontWeight: "600",
+                    background: blog.published ? "#d1fae5" : "#fef3c7",
+                    color: blog.published ? "#065f46" : "#92400e",
+                    zIndex: 1,
+                  }}
+                >
+                  {blog.published ? "Published" : "Draft"}
+                </div>
+
                 <div
                   onClick={() => navigate(`/cms/blog/${blog._id}`)}
                   style={{ cursor: "pointer" }}
@@ -173,8 +235,16 @@ export default function CMSPage() {
                     {blog.title}
                   </h3>
                   <p style={{ margin: 0, color: "#6b7280", lineHeight: "1.45", fontSize: "13px" }}>
-                    {stripHtml(blog.content).substring(0, 140)}...
+                    {stripHtml(blog.content).substring(0, 100)}...
                   </p>
+                  
+                  {/* Author info for admin */}
+                  {user?.role === "admin" && blog.authorName && (
+                    <div style={{ fontSize: "11px", color: "#8b5cf6", marginTop: "4px" }}>
+                      By: {blog.authorName}
+                    </div>
+                  )}
+
                   <div style={{
                     marginTop: "8px",
                     display: "flex",
@@ -186,7 +256,22 @@ export default function CMSPage() {
                     <span>{new Date(blog.createdAt).toLocaleDateString()}</span>
                     <span>{Math.max(1, Math.round((blog.content?.length || 0) / 300))} min read</span>
                   </div>
-                  <div style={{ display: "flex", gap: "8px", marginTop: "8px" }}>
+
+                  <div style={{ display: "flex", gap: "6px", marginTop: "8px", flexWrap: "wrap" }}>
+                    <button
+                      onClick={() => handleTogglePublish(blog._id)}
+                      style={{
+                        background: blog.published ? "#fef3c7" : "#d1fae5",
+                        color: blog.published ? "#92400e" : "#065f46",
+                        border: "none",
+                        padding: "6px 10px",
+                        borderRadius: "4px",
+                        fontSize: "11px",
+                        cursor: "pointer",
+                      }}
+                    >
+                      {blog.published ? "Unpublish" : "Publish"}
+                    </button>
                     <button
                       onClick={() => navigate(`/cms/editor/${blog._id}`)}
                       style={{
@@ -195,7 +280,7 @@ export default function CMSPage() {
                         border: "none",
                         padding: "6px 10px",
                         borderRadius: "4px",
-                        fontSize: "12px",
+                        fontSize: "11px",
                         cursor: "pointer",
                       }}
                     >
@@ -209,7 +294,7 @@ export default function CMSPage() {
                         border: "none",
                         padding: "6px 10px",
                         borderRadius: "4px",
-                        fontSize: "12px",
+                        fontSize: "11px",
                         cursor: "pointer",
                       }}
                     >

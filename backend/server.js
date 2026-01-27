@@ -38,7 +38,9 @@ app.get("/", (req, res) => {
   res.send("Backend running successfully 🚀");
 });
 
+app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/blogs", require("./routes/blogRoutes"));
+app.use("/api/users", require("./routes/userRoutes"));
 
 /* ---------- SERVER ---------- */
 const PORT = process.env.PORT || 5000;

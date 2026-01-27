@@ -2,28 +2,39 @@ const express = require("express");
 const router = express.Router();
 const blogController = require("../controllers/blogController");
 const upload = require("../middleware/upload");
+const { authMiddleware, adminMiddleware } = require("../middleware/authMiddleware");
 
-/* GET ALL BLOGS */
-router.get("/", blogController.getBlogs);
+/* ============ PUBLIC ROUTES (No auth needed) ============ */
 
-/* GET SINGLE BLOG BY ID */
-router.get("/:id", blogController.getBlogById);
+// Get all published blogs (for public users to read)
+router.get("/public", blogController.getPublicBlogs);
 
-/* CREATE BLOG (WITH IMAGE) */
-router.post(
-  "/",
-  upload.single("image"), // 👈 IMPORTANT
-  blogController.createBlog
-);
+// Get single published blog by ID (for public users to read)
+router.get("/public/:id", blogController.getPublicBlogById);
 
-/* UPDATE BLOG */
-router.put(
-  "/:id",
-  upload.single("image"),
-  blogController.updateBlog
-);
+/* ============ PROTECTED ROUTES (Auth required) ============ */
 
-/* DELETE BLOG */
-router.delete("/:id", blogController.deleteBlog);
+// Get blogs (user sees own, admin sees all)
+router.get("/", authMiddleware, blogController.getBlogs);
+
+// Get single blog by ID
+router.get("/:id", authMiddleware, blogController.getBlogById);
+
+// Create blog
+router.post("/", authMiddleware, upload.single("image"), blogController.createBlog);
+
+// Update blog
+router.put("/:id", authMiddleware, upload.single("image"), blogController.updateBlog);
+
+// Toggle publish/unpublish
+router.put("/:id/publish", authMiddleware, blogController.togglePublish);
+
+// Delete blog
+router.delete("/:id", authMiddleware, blogController.deleteBlog);
+
+/* ============ ADMIN ROUTES ============ */
+
+// Get all blogs (admin only)
+router.get("/admin/all", authMiddleware, adminMiddleware, blogController.getAllBlogsAdmin);
 
 module.exports = router;

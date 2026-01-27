@@ -16,13 +16,13 @@ const icons = {
   settings: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.604.852.997 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>,
 };
 
-export default function DashboardLayout() {
+export default function DashboardLayout({ user, onLogout }) {
   const { pathname } = useLocation();
 
   const isActive = (path) =>
     pathname.startsWith(path) ? "active" : "";
 
-  const menuItems = [
+  const baseMenuItems = [
     { icon: icons.dashboard, label: "Dashboard", path: "/dashboard" },
     { icon: icons.investors, label: "Investors", path: "/investors" },
     { icon: icons.tracker, label: "Master Investor\nTracker", path: "/tracker" },
@@ -35,6 +35,11 @@ export default function DashboardLayout() {
     { icon: icons.cmsDelta, label: "CMS (Delta)", path: "/cms", hasIndicator: true },
     { icon: icons.settings, label: "Settings", path: "/settings" },
   ];
+
+  // Add admin menu items if user is admin
+  const menuItems = user?.role === "admin" 
+    ? [...baseMenuItems.slice(0, -1), { icon: icons.people, label: "Manage Users", path: "/admin/users" }, baseMenuItems[baseMenuItems.length - 1]]
+    : baseMenuItems;
 
   return (
     <div className="cms-layout">
@@ -72,6 +77,35 @@ export default function DashboardLayout() {
             ))}
           </ul>
         </div>
+
+        {/* User Info & Logout */}
+        {user && (
+          <div style={{ padding: "20px", borderTop: "1px solid #e2e8f0", marginTop: "auto" }}>
+            <div style={{ marginBottom: "12px", fontSize: "14px", color: "#4a5568" }}>
+              <div style={{ fontWeight: "600" }}>{user.name}</div>
+              <div style={{ fontSize: "12px", color: "#718096" }}>{user.email}</div>
+              <div style={{ fontSize: "11px", color: "#38b2ac", textTransform: "uppercase", marginTop: "4px" }}>
+                {user.role}
+              </div>
+            </div>
+            <button
+              onClick={onLogout}
+              style={{
+                width: "100%",
+                padding: "10px",
+                background: "#fed7d7",
+                color: "#c53030",
+                border: "none",
+                borderRadius: "6px",
+                cursor: "pointer",
+                fontWeight: "500",
+                fontSize: "13px",
+              }}
+            >
+              Logout
+            </button>
+          </div>
+        )}
       </aside>
 
       <main className="editor-wrapper">

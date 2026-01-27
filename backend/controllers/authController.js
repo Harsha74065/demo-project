@@ -37,6 +37,11 @@ exports.login = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
+    // Check if user is blocked
+    if (user.status === "blocked") {
+      return res.status(403).json({ message: "Your account has been blocked. Contact admin." });
+    }
+
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid credentials" });
@@ -44,11 +49,20 @@ exports.login = async (req, res) => {
 
     const token = jwt.sign(
       { id: user._id, role: user.role },
-      process.env.JWT_SECRET,
-      { expiresIn: "1d" }
+      process.env.JWT_SECRET || "dexter_delta_secret_key_2026",
+      { expiresIn: "7d" }
     );
 
-    res.json({ token, user });
+    res.json({ 
+      token, 
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        status: user.status
+      }
+    });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

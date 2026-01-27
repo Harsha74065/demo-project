@@ -18,6 +18,16 @@ const blogSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+    authorName: String,
+    status: {
+      type: String,
+      enum: ["pending", "approved", "rejected"],
+      default: "approved", // for now, auto-approve
+    },
   },
   { timestamps: true }
 );
