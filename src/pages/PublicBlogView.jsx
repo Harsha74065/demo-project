@@ -39,7 +39,7 @@ const PublicBlogView = () => {
     return (
       <div style={styles.loadingContainer}>
         <div style={styles.spinner}></div>
-        <p>Loading blog...</p>
+        <p>Loading...</p>
       </div>
     );
   }
@@ -49,8 +49,8 @@ const PublicBlogView = () => {
       <div style={styles.errorContainer}>
         <h2>Blog Not Found</h2>
         <p>{error}</p>
-        <Link to="/blogs" style={styles.backLink}>
-          ← Back to Blogs
+        <Link to="/" style={styles.backLink}>
+          ← Back to Home
         </Link>
       </div>
     );
@@ -58,61 +58,96 @@ const PublicBlogView = () => {
 
   return (
     <div style={styles.container}>
-      {/* Header */}
+      {/* Header - matching main site */}
       <header style={styles.header}>
         <div style={styles.headerContent}>
-          <Link to="/blogs" style={styles.logoLink}>
+          <Link to="/" style={styles.logoSection}>
             <img
               src="https://www.dfrpms.com/images/Dexter-Capital-Advisors-logo.png"
-              alt="Dexter Logo"
+              alt="Dexter Capital Advisors"
               style={styles.logo}
             />
+            <div style={styles.logoDivider}></div>
+            <div style={styles.deltaLogo}>
+              <span style={styles.deltaIcon}>&#9650;</span>
+              <div style={styles.deltaText}>
+                <span style={styles.deltaTitle}>DELTA</span>
+                <span style={styles.deltaSubtitle}>Investment Advisors</span>
+              </div>
+            </div>
           </Link>
           <nav style={styles.nav}>
-            <Link to="/blogs" style={styles.navLink}>
-              All Blogs
-            </Link>
-            <Link to="/login" style={styles.navLinkAlt}>
-              Login
-            </Link>
+            <a href="/#about" style={styles.navLink}>About Us</a>
+            <a href="/#team" style={styles.navLink}>Team</a>
+            <Link to="/#insights" style={styles.navLinkActive}>Insights</Link>
+            <a href="/#ipo" style={styles.navLink}>IPO Overview</a>
+            <a href="/#careers" style={styles.navLink}>Careers</a>
+            <a href="/#contact" style={styles.navLink}>Contact Us</a>
           </nav>
         </div>
       </header>
 
       {/* Blog Content */}
       <article style={styles.article}>
-        {blog.imageUrl && (
-          <div style={styles.heroImage}>
-            <img src={blog.imageUrl} alt={blog.title} style={styles.image} />
+        <div style={styles.articleLayout}>
+          {/* Image on left */}
+          {blog.imageUrl && (
+            <div style={styles.imageSection}>
+              <img src={blog.imageUrl} alt={blog.title} style={styles.image} />
+            </div>
+          )}
+          
+          {/* Title and meta on right */}
+          <div style={styles.titleSection}>
+            <h1 style={styles.title}>{blog.title}</h1>
+            <div style={styles.meta}>
+              <span>{formatDate(blog.createdAt)}</span>
+              <span style={styles.separator}>•</span>
+              <span>{Math.max(1, Math.round((blog.content?.length || 0) / 300))} min read</span>
+            </div>
           </div>
-        )}
+        </div>
 
-        <div style={styles.content}>
-          <h1 style={styles.title}>{blog.title}</h1>
-
-          <div style={styles.meta}>
-            <span style={styles.author}>By {blog.authorName || "Admin"}</span>
-            <span style={styles.separator}>•</span>
-            <span style={styles.date}>{formatDate(blog.createdAt)}</span>
-          </div>
-
+        {/* Blog body */}
+        <div style={styles.bodySection}>
           <div
             style={styles.body}
             dangerouslySetInnerHTML={{ __html: blog.content }}
           />
         </div>
-      </article>
 
-      {/* Back Link */}
-      <div style={styles.backSection}>
-        <Link to="/blogs" style={styles.backButton}>
-          ← Back to All Blogs
-        </Link>
-      </div>
+        {/* Back to insights */}
+        <div style={styles.backSection}>
+          <Link to="/#insights" style={styles.backButton}>
+            ← Back to Insights
+          </Link>
+        </div>
+      </article>
 
       {/* Footer */}
       <footer style={styles.footer}>
-        <p>© 2026 Delta Investment Advisors. All Rights Reserved.</p>
+        <div style={styles.footerContent}>
+          <div style={styles.footerSection}>
+            <div style={styles.footerLogo}>
+              <span style={styles.deltaIcon}>&#9650;</span>
+              <div style={styles.deltaText}>
+                <span style={styles.deltaTitle}>DELTA</span>
+                <span style={styles.deltaSubtitle}>Investment Advisors</span>
+              </div>
+            </div>
+          </div>
+          <div style={styles.footerSection}>
+            <h4 style={styles.footerTitle}>Overview</h4>
+            <Link to="/" style={styles.footerLink}>Home</Link>
+            <Link to="/#insights" style={styles.footerLink}>Insights</Link>
+          </div>
+        </div>
+        <div style={styles.disclaimer}>
+          <p>Disclaimer: We are not SEBI registered Investment Advisor. No content on this website should be taken as a recommendation.</p>
+        </div>
+        <div style={styles.copyright}>
+          <p>© 2026 Delta Investment Advisors All Rights Reserved.</p>
+        </div>
       </footer>
     </div>
   );
@@ -121,7 +156,8 @@ const PublicBlogView = () => {
 const styles = {
   container: {
     minHeight: "100vh",
-    background: "#f7fafc",
+    background: "#fff",
+    fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
   },
   loadingContainer: {
     display: "flex",
@@ -135,7 +171,7 @@ const styles = {
     width: "40px",
     height: "40px",
     border: "4px solid #e2e8f0",
-    borderTop: "4px solid #38b2ac",
+    borderTop: "4px solid #c41e3a",
     borderRadius: "50%",
     animation: "spin 1s linear infinite",
   },
@@ -149,121 +185,199 @@ const styles = {
     textAlign: "center",
   },
   backLink: {
-    color: "#38b2ac",
+    color: "#c41e3a",
     textDecoration: "none",
     fontWeight: "500",
     marginTop: "20px",
   },
+
+  // Header
   header: {
     background: "#fff",
-    borderBottom: "1px solid #e2e8f0",
-    padding: "15px 0",
+    borderBottom: "1px solid #e5e7eb",
+    padding: "12px 0",
     position: "sticky",
     top: 0,
     zIndex: 100,
   },
   headerContent: {
-    maxWidth: "1200px",
+    maxWidth: "1280px",
     margin: "0 auto",
-    padding: "0 20px",
+    padding: "0 24px",
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
   },
-  logoLink: {
+  logoSection: {
+    display: "flex",
+    alignItems: "center",
+    gap: "16px",
     textDecoration: "none",
   },
   logo: {
+    height: "45px",
+  },
+  logoDivider: {
+    width: "1px",
     height: "40px",
+    background: "#d1d5db",
+  },
+  deltaLogo: {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+  },
+  deltaIcon: {
+    color: "#c41e3a",
+    fontSize: "28px",
+  },
+  deltaText: {
+    display: "flex",
+    flexDirection: "column",
+  },
+  deltaTitle: {
+    fontSize: "20px",
+    fontWeight: "700",
+    color: "#1f2937",
+    letterSpacing: "2px",
+  },
+  deltaSubtitle: {
+    fontSize: "10px",
+    color: "#6b7280",
+    letterSpacing: "0.5px",
   },
   nav: {
     display: "flex",
-    gap: "15px",
+    gap: "32px",
   },
   navLink: {
-    color: "#4a5568",
+    color: "#374151",
     textDecoration: "none",
+    fontSize: "15px",
     fontWeight: "500",
-    padding: "8px 16px",
-    borderRadius: "6px",
-    background: "#edf2f7",
   },
-  navLinkAlt: {
-    color: "#fff",
+  navLinkActive: {
+    color: "#c41e3a",
     textDecoration: "none",
-    fontWeight: "500",
-    padding: "8px 16px",
-    borderRadius: "6px",
-    background: "#38b2ac",
+    fontSize: "15px",
+    fontWeight: "600",
   },
+
+  // Article
   article: {
-    maxWidth: "800px",
+    maxWidth: "1200px",
     margin: "0 auto",
-    background: "#fff",
-    marginTop: "30px",
-    borderRadius: "12px",
-    overflow: "hidden",
-    boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
+    padding: "40px 24px",
   },
-  heroImage: {
-    height: "400px",
+  articleLayout: {
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    gap: "40px",
+    alignItems: "start",
+    marginBottom: "40px",
+  },
+  imageSection: {
+    borderRadius: "12px",
     overflow: "hidden",
   },
   image: {
     width: "100%",
-    height: "100%",
-    objectFit: "cover",
+    height: "auto",
+    display: "block",
   },
-  content: {
-    padding: "40px",
+  titleSection: {
+    paddingTop: "20px",
   },
   title: {
     margin: "0 0 20px 0",
-    fontSize: "36px",
+    fontSize: "42px",
     fontWeight: "700",
-    color: "#1a365d",
-    lineHeight: "1.3",
+    color: "#1f2937",
+    lineHeight: "1.2",
   },
   meta: {
     display: "flex",
     alignItems: "center",
-    gap: "10px",
-    color: "#718096",
+    gap: "12px",
+    color: "#6b7280",
     fontSize: "15px",
-    marginBottom: "30px",
-    paddingBottom: "20px",
-    borderBottom: "1px solid #e2e8f0",
-  },
-  author: {
-    fontWeight: "500",
   },
   separator: {
-    color: "#cbd5e0",
+    color: "#d1d5db",
   },
-  date: {},
+  bodySection: {
+    maxWidth: "800px",
+    margin: "0 auto",
+    paddingTop: "20px",
+    borderTop: "1px solid #e5e7eb",
+  },
   body: {
     fontSize: "17px",
-    lineHeight: "1.8",
-    color: "#4a5568",
+    lineHeight: "1.9",
+    color: "#374151",
   },
   backSection: {
-    maxWidth: "800px",
-    margin: "30px auto",
-    padding: "0 20px",
+    marginTop: "40px",
+    paddingTop: "20px",
+    borderTop: "1px solid #e5e7eb",
   },
   backButton: {
     display: "inline-block",
-    color: "#38b2ac",
+    color: "#c41e3a",
     textDecoration: "none",
     fontWeight: "500",
     fontSize: "15px",
   },
+
+  // Footer
   footer: {
-    background: "#1a365d",
+    background: "#f9fafb",
+    borderTop: "1px solid #e5e7eb",
+    marginTop: "60px",
+  },
+  footerContent: {
+    maxWidth: "1200px",
+    margin: "0 auto",
+    padding: "40px 24px",
+    display: "grid",
+    gridTemplateColumns: "2fr 1fr",
+    gap: "40px",
+  },
+  footerSection: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "12px",
+  },
+  footerLogo: {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+  },
+  footerTitle: {
+    fontSize: "16px",
+    fontWeight: "600",
+    color: "#1f2937",
+    marginBottom: "8px",
+  },
+  footerLink: {
+    color: "#4b5563",
+    textDecoration: "none",
+    fontSize: "14px",
+    padding: "4px 0",
+  },
+  disclaimer: {
+    background: "#374151",
     color: "#fff",
+    padding: "20px 24px",
+    textAlign: "center",
+    fontSize: "14px",
+  },
+  copyright: {
+    background: "#f9fafb",
     textAlign: "center",
     padding: "20px",
-    marginTop: "40px",
+    color: "#6b7280",
+    fontSize: "14px",
   },
 };
 

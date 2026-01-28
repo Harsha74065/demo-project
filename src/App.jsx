@@ -43,9 +43,13 @@ function App() {
 
   return (
     <Routes>
-      {/* Public Routes */}
+      {/* Public Routes - Anyone can access */}
+      <Route path="/" element={<PublicBlogs />} />
       <Route path="/blogs" element={<PublicBlogs />} />
       <Route path="/blog/:id" element={<PublicBlogView />} />
+      <Route path="/insights" element={<PublicBlogs />} />
+      
+      {/* Admin Login */}
       <Route
         path="/login"
         element={
@@ -53,20 +57,17 @@ function App() {
         }
       />
 
-      {/* Protected Routes */}
+      {/* Protected Admin Routes */}
       {user ? (
         <Route element={<DashboardLayout user={user} onLogout={handleLogout} />}>
-          <Route path="/" element={<Navigate to="/cms" />} />
-          <Route path="/dashboard" element={<h2>Dashboard Working ✅</h2>} />
+          <Route path="/dashboard" element={<h2>Dashboard Working</h2>} />
           <Route path="/cms" element={<CMSPage />} />
           <Route path="/cms/blog/:id" element={<BlogDetail />} />
           <Route path="/cms/editor" element={<BlogEditor user={user} />} />
           <Route path="/cms/editor/:id" element={<BlogEditor user={user} />} />
           <Route path="/admin/users" element={<AdminUsers />} />
         </Route>
-      ) : (
-        <Route path="*" element={<Navigate to="/login" />} />
-      )}
+      ) : null}
     </Routes>
   );
 }
