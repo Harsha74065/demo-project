@@ -22,6 +22,20 @@ const PublicBlogs = () => {
     }
   };
 
+  // Fix image URLs to use correct backend
+  const getImageUrl = (url) => {
+    if (!url) return null;
+    // If it's a localhost URL, replace with production backend
+    if (url.includes("localhost")) {
+      return url.replace(/http:\/\/localhost:\d+/, API_URL);
+    }
+    // If it's a relative path, prepend API_URL
+    if (url.startsWith("/uploads")) {
+      return `${API_URL}${url}`;
+    }
+    return url;
+  };
+
   const stripHtml = (html) => {
     if (!html) return "";
     const tmp = document.createElement("div");
@@ -143,7 +157,7 @@ const PublicBlogs = () => {
                 {blog.imageUrl && (
                   <div style={styles.blogImageContainer}>
                     <img
-                      src={blog.imageUrl}
+                      src={getImageUrl(blog.imageUrl)}
                       alt={blog.title}
                       style={styles.blogImage}
                     />

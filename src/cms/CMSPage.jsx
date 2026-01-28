@@ -10,6 +10,18 @@ const stripHtml = (html) => {
   return tmp.textContent || tmp.innerText || "";
 };
 
+// Fix image URLs to use correct backend
+const getImageUrl = (url) => {
+  if (!url) return null;
+  if (url.includes("localhost")) {
+    return url.replace(/http:\/\/localhost:\d+/, API_URL);
+  }
+  if (url.startsWith("/uploads")) {
+    return `${API_URL}${url}`;
+  }
+  return url;
+};
+
 export default function CMSPage() {
   const navigate = useNavigate();
   const [blogs, setBlogs] = useState([]);
@@ -195,7 +207,7 @@ All Blogs
                 >
                   {blog.imageUrl ? (
                     <img
-                      src={blog.imageUrl}
+                      src={getImageUrl(blog.imageUrl)}
                       alt={blog.title}
                       style={{
                         width: "100%",

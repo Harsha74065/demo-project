@@ -27,6 +27,18 @@ const PublicBlogView = () => {
     }
   };
 
+  // Fix image URLs to use correct backend
+  const getImageUrl = (url) => {
+    if (!url) return null;
+    if (url.includes("localhost")) {
+      return url.replace(/http:\/\/localhost:\d+/, API_URL);
+    }
+    if (url.startsWith("/uploads")) {
+      return `${API_URL}${url}`;
+    }
+    return url;
+  };
+
   const formatDate = (dateStr) => {
     return new Date(dateStr).toLocaleDateString("en-IN", {
       day: "numeric",
@@ -93,7 +105,7 @@ const PublicBlogView = () => {
           {/* Image on left */}
           {blog.imageUrl && (
             <div style={styles.imageSection}>
-              <img src={blog.imageUrl} alt={blog.title} style={styles.image} />
+              <img src={getImageUrl(blog.imageUrl)} alt={blog.title} style={styles.image} />
             </div>
           )}
           
