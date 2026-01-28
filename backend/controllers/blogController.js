@@ -1,4 +1,23 @@
 const Blog = require("../models/Blog");
+const cloudinary = require("../config/cloudinary");
+const fs = require("fs");
+
+// Upload image to Cloudinary
+const uploadToCloudinary = async (file) => {
+  try {
+    const result = await cloudinary.uploader.upload(file.path, {
+      folder: "blog-images",
+      resource_type: "image",
+    });
+    // Delete local file after upload
+    fs.unlinkSync(file.path);
+    return result.secure_url;
+  } catch (error) {
+    console.error("Cloudinary upload error:", error);
+    // Fallback to local URL if Cloudinary fails
+    return null;
+  }
+};
 
 const makeImageUrl = (req) => {
   if (req.file) {
@@ -28,7 +47,17 @@ exports.createBlog = async (req, res) => {
       });
     }
 
-    const uploadedImageUrl = makeImageUrl(req);
+    // Try Cloudinary first, fallback to local
+    let finalImageUrl = imageUrl;
+    if (req.file) {
+      const cloudinaryUrl = await uploadToCloudinary(req.file);
+      if (cloudinaryUrl) {
+        finalImageUrl = cloudinaryUrl;
+      } else {
+        // Fallback to local URL
+        finalImageUrl = makeImageUrl(req);
+      }
+    }
 
     const newBlog = new Blog({
       title,
@@ -36,7 +65,7 @@ exports.createBlog = async (req, res) => {
       seoDescription,
       seoKeywords,
       content,
-      imageUrl: uploadedImageUrl || imageUrl,
+      imageUrl: finalImageUrl,
       published: published || false,
       userId: req.user?.id || null,
       authorName: req.user?.name || "Anonymous",
@@ -160,7 +189,6 @@ exports.updateBlog = async (req, res) => {
       return res.status(403).json({ message: "You can only edit your own blogs" });
     }
 
-    const uploadedImageUrl = makeImageUrl(req);
     const updatedFields = {
       title,
       seoTitle,
@@ -173,8 +201,14 @@ exports.updateBlog = async (req, res) => {
       updatedFields.published = published;
     }
 
-    if (uploadedImageUrl) {
-      updatedFields.imageUrl = uploadedImageUrl;
+    // Try Cloudinary first, fallback to local
+    if (req.file) {
+      const cloudinaryUrl = await uploadToCloudinary(req.file);
+      if (cloudinaryUrl) {
+        updatedFields.imageUrl = cloudinaryUrl;
+      } else {
+        updatedFields.imageUrl = makeImageUrl(req);
+      }
     } else if (imageUrl) {
       updatedFields.imageUrl = imageUrl;
     }
