@@ -655,15 +655,106 @@ export default function BlogEditor() {
         </h2>
 
         {/* IMAGE */}
-        <div className="image-drop">
-          <input type="file" accept="image/*" onChange={handleImageUpload} />
-          {imagePreview ? (
-            <img src={imagePreview} alt="Blog preview" />
-          ) : (
-            <p>
-              Drag & drop Blog image here, or <span>click to select</span>
+        <div style={{ marginBottom: "20px" }}>
+          <label style={{ display: "block", marginBottom: "8px", fontWeight: "500", color: "#374151" }}>
+            Blog Cover Image
+          </label>
+          
+          {/* Image URL Input - Recommended for production */}
+          <div style={{ marginBottom: "12px" }}>
+            <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+              <input
+                type="text"
+                placeholder="Paste image URL (e.g., https://images.unsplash.com/...)"
+                value={existingImageUrl}
+                onChange={(e) => {
+                  setExistingImageUrl(e.target.value);
+                  setImagePreview(e.target.value);
+                  setImageFile(null);
+                }}
+                style={{
+                  flex: 1,
+                  padding: "12px",
+                  border: "1px solid #d1d5db",
+                  borderRadius: "6px",
+                  fontSize: "14px",
+                }}
+              />
+              <a 
+                href="https://unsplash.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                style={{
+                  padding: "12px 16px",
+                  background: "#f3f4f6",
+                  color: "#374151",
+                  textDecoration: "none",
+                  borderRadius: "6px",
+                  fontSize: "13px",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                Get Images
+              </a>
+            </div>
+            <p style={{ fontSize: "12px", color: "#6b7280", marginTop: "4px" }}>
+              Tip: Right-click any image on Unsplash → Copy image address → Paste here
             </p>
+          </div>
+
+          {/* Image Preview */}
+          {imagePreview && (
+            <div style={{ marginTop: "12px", position: "relative" }}>
+              <img 
+                src={imagePreview} 
+                alt="Blog preview" 
+                style={{ 
+                  maxWidth: "100%", 
+                  maxHeight: "300px", 
+                  borderRadius: "8px",
+                  border: "1px solid #e5e7eb",
+                }}
+                onError={(e) => {
+                  e.target.style.display = "none";
+                }}
+              />
+              <button
+                onClick={() => {
+                  setImagePreview("");
+                  setExistingImageUrl("");
+                  setImageFile(null);
+                }}
+                style={{
+                  position: "absolute",
+                  top: "8px",
+                  right: "8px",
+                  background: "#ef4444",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "50%",
+                  width: "28px",
+                  height: "28px",
+                  cursor: "pointer",
+                  fontSize: "16px",
+                }}
+              >
+                ×
+              </button>
+            </div>
           )}
+          
+          {/* Or upload file (for local testing only) */}
+          <details style={{ marginTop: "12px" }}>
+            <summary style={{ cursor: "pointer", fontSize: "13px", color: "#6b7280" }}>
+              Or upload from computer (local testing only)
+            </summary>
+            <div className="image-drop" style={{ marginTop: "8px" }}>
+              <input type="file" accept="image/*" onChange={handleImageUpload} />
+              <p>
+                Drag & drop image here, or <span>click to select</span>
+              </p>
+            </div>
+          </details>
         </div>
 
         <div className="two-columns">
