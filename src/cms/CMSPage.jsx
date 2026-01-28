@@ -151,8 +151,8 @@ All Blogs
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
-              gap: "18px",
+              gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
+              gap: "24px",
             }}
           >
             {blogs.map((blog) => (
@@ -160,13 +160,15 @@ All Blogs
                 key={blog._id}
                 className="cms-blog-card"
                 style={{
-                  borderRadius: "6px",
+                  borderRadius: "12px",
                   overflow: "hidden",
                   background: "#fff",
-                  boxShadow: "0 2px 10px rgba(15, 23, 42, 0.08)",
+                  boxShadow: "0 4px 20px rgba(15, 23, 42, 0.08)",
                   display: "flex",
                   flexDirection: "column",
                   position: "relative",
+                  border: "1px solid #e5e7eb",
+                  transition: "transform 0.2s, box-shadow 0.2s",
                 }}
               >
                 {/* Published Badge */}
@@ -218,52 +220,85 @@ All Blogs
                 </div>
 
                 <div style={{
-                  padding: "14px 16px 12px",
+                  padding: "16px",
                   display: "flex",
                   flexDirection: "column",
-                  gap: "6px",
                   flex: "1",
+                  minHeight: "180px",
                 }}>
+                  {/* Title - max 2 lines */}
                   <h3
                     onClick={() => navigate(`/cms/blog/${blog._id}`)}
-                    style={{ margin: 0, fontSize: "16px", fontWeight: "600", color: "#111827", cursor: "pointer" }}
+                    style={{ 
+                      margin: "0 0 8px 0", 
+                      fontSize: "16px", 
+                      fontWeight: "600", 
+                      color: "#111827", 
+                      cursor: "pointer",
+                      lineHeight: "1.4",
+                      display: "-webkit-box",
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: "vertical",
+                      overflow: "hidden",
+                    }}
                   >
                     {blog.title}
                   </h3>
-                  <p style={{ margin: 0, color: "#6b7280", lineHeight: "1.45", fontSize: "13px" }}>
-                    {stripHtml(blog.content).substring(0, 100)}...
+
+                  {/* Excerpt - max 3 lines */}
+                  <p style={{ 
+                    margin: "0 0 12px 0", 
+                    color: "#6b7280", 
+                    lineHeight: "1.5", 
+                    fontSize: "13px",
+                    display: "-webkit-box",
+                    WebkitLineClamp: 3,
+                    WebkitBoxOrient: "vertical",
+                    overflow: "hidden",
+                    flex: "1",
+                  }}>
+                    {stripHtml(blog.content).substring(0, 120)}...
                   </p>
                   
-                  {/* Author info */}
-                  {blog.authorName && (
-                    <div style={{ fontSize: "11px", color: "#8b5cf6", marginTop: "4px" }}>
-                      By: {blog.authorName}
-                    </div>
-                  )}
+                  {/* Author info - always show */}
+                  <div style={{ 
+                    fontSize: "12px", 
+                    color: "#6366f1", 
+                    marginBottom: "8px",
+                    fontWeight: "500",
+                  }}>
+                    By: {blog.authorName || "Admin"}
+                  </div>
 
+                  {/* Meta info */}
                   <div style={{
-                    marginTop: "8px",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "space-between",
                     fontSize: "12px",
-                    color: "#9ca3af"
+                    color: "#9ca3af",
+                    marginBottom: "12px",
+                    paddingBottom: "12px",
+                    borderBottom: "1px solid #f3f4f6",
                   }}>
-                    <span>{new Date(blog.createdAt).toLocaleDateString()}</span>
+                    <span>{new Date(blog.createdAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}</span>
                     <span>{Math.max(1, Math.round((blog.content?.length || 0) / 300))} min read</span>
                   </div>
 
-                  <div style={{ display: "flex", gap: "6px", marginTop: "8px", flexWrap: "wrap" }}>
+                  {/* Action buttons */}
+                  <div style={{ display: "flex", gap: "8px" }}>
                     <button
                       onClick={() => handleTogglePublish(blog._id)}
                       style={{
                         background: blog.published ? "#fef3c7" : "#d1fae5",
                         color: blog.published ? "#92400e" : "#065f46",
                         border: "none",
-                        padding: "6px 10px",
-                        borderRadius: "4px",
-                        fontSize: "11px",
+                        padding: "8px 12px",
+                        borderRadius: "6px",
+                        fontSize: "12px",
+                        fontWeight: "500",
                         cursor: "pointer",
+                        transition: "opacity 0.2s",
                       }}
                     >
                       {blog.published ? "Unpublish" : "Publish"}
@@ -274,10 +309,12 @@ All Blogs
                         background: "#111827",
                         color: "#fff",
                         border: "none",
-                        padding: "6px 10px",
-                        borderRadius: "4px",
-                        fontSize: "11px",
+                        padding: "8px 12px",
+                        borderRadius: "6px",
+                        fontSize: "12px",
+                        fontWeight: "500",
                         cursor: "pointer",
+                        transition: "opacity 0.2s",
                       }}
                     >
                       Edit
@@ -288,10 +325,12 @@ All Blogs
                         background: "#fee2e2",
                         color: "#dc2626",
                         border: "none",
-                        padding: "6px 10px",
-                        borderRadius: "4px",
-                        fontSize: "11px",
+                        padding: "8px 12px",
+                        borderRadius: "6px",
+                        fontSize: "12px",
+                        fontWeight: "500",
                         cursor: "pointer",
+                        transition: "opacity 0.2s",
                       }}
                     >
                       Delete
