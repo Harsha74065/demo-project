@@ -744,15 +744,40 @@ export default function BlogEditor() {
           )}
           
           {/* Upload from computer - saves to Cloudinary */}
-          <details style={{ marginTop: "12px" }}>
+          <details style={{ marginTop: "12px" }} open>
             <summary style={{ cursor: "pointer", fontSize: "13px", color: "#2563eb", fontWeight: "500" }}>
               Or upload from computer (recommended)
             </summary>
-            <div className="image-drop" style={{ marginTop: "8px" }}>
-              <input type="file" accept="image/*" onChange={handleImageUpload} />
-              <p>
-                Drag & drop image here, or <span>click to select</span>
-              </p>
+            <div style={{ 
+              marginTop: "8px",
+              border: "2px dashed #d1d5db",
+              borderRadius: "8px",
+              padding: "40px 20px",
+              textAlign: "center",
+              cursor: "pointer",
+              background: "#f9fafb",
+              position: "relative",
+            }}>
+              <input 
+                type="file" 
+                accept="image/*" 
+                onChange={handleImageUpload}
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                  opacity: 0,
+                  cursor: "pointer",
+                }}
+              />
+              <div style={{ pointerEvents: "none" }}>
+                <div style={{ fontSize: "40px", marginBottom: "8px" }}>📁</div>
+                <p style={{ margin: 0, color: "#6b7280" }}>
+                  Drag & drop image here, or <span style={{ color: "#2563eb", fontWeight: "500" }}>click to select</span>
+                </p>
+              </div>
             </div>
           </details>
         </div>
