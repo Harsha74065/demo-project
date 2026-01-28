@@ -743,10 +743,10 @@ export default function BlogEditor() {
             </div>
           )}
           
-          {/* Or upload file (for local testing only) */}
+          {/* Upload from computer - saves to Cloudinary */}
           <details style={{ marginTop: "12px" }}>
-            <summary style={{ cursor: "pointer", fontSize: "13px", color: "#6b7280" }}>
-              Or upload from computer (local testing only)
+            <summary style={{ cursor: "pointer", fontSize: "13px", color: "#2563eb", fontWeight: "500" }}>
+              Or upload from computer (recommended)
             </summary>
             <div className="image-drop" style={{ marginTop: "8px" }}>
               <input type="file" accept="image/*" onChange={handleImageUpload} />
