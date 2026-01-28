@@ -564,14 +564,11 @@ export default function BlogEditor() {
   /* ---------------- IMAGE UPLOAD ---------------- */
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
-    console.log("File selected:", file);
     if (file) {
       const previewUrl = URL.createObjectURL(file);
-      console.log("Preview URL:", previewUrl);
       setImageFile(file); // file for backend
       setImagePreview(previewUrl); // preview only
       setExistingImageUrl("");
-      alert("Image selected: " + file.name);
     }
   };
 
@@ -757,24 +754,68 @@ export default function BlogEditor() {
               onChange={handleImageUpload}
               style={{ display: "none" }}
             />
-            <button
-              type="button"
-              onClick={() => fileInputRef.current?.click()}
-              style={{ 
-                width: "100%",
-                border: "2px dashed #2563eb",
+            
+            {/* Show preview if image is selected, otherwise show upload button */}
+            {imagePreview ? (
+              <div style={{ 
+                border: "2px solid #10b981",
                 borderRadius: "8px",
-                padding: "40px 20px",
-                textAlign: "center",
-                cursor: "pointer",
-                background: "#eff6ff",
-                color: "#2563eb",
-                fontSize: "16px",
-                fontWeight: "500",
-              }}
-            >
-              📁 Click here to upload image from computer
-            </button>
+                padding: "16px",
+                background: "#f0fdf4",
+              }}>
+                <p style={{ margin: "0 0 12px 0", color: "#10b981", fontWeight: "600" }}>
+                  ✓ Image selected! Preview:
+                </p>
+                <img 
+                  src={imagePreview} 
+                  alt="Preview" 
+                  style={{ 
+                    maxWidth: "100%", 
+                    maxHeight: "200px", 
+                    borderRadius: "8px",
+                    display: "block",
+                  }} 
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    setImagePreview("");
+                    setImageFile(null);
+                    setExistingImageUrl("");
+                  }}
+                  style={{
+                    marginTop: "12px",
+                    padding: "8px 16px",
+                    background: "#ef4444",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: "6px",
+                    cursor: "pointer",
+                  }}
+                >
+                  Remove Image
+                </button>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                style={{ 
+                  width: "100%",
+                  border: "2px dashed #2563eb",
+                  borderRadius: "8px",
+                  padding: "40px 20px",
+                  textAlign: "center",
+                  cursor: "pointer",
+                  background: "#eff6ff",
+                  color: "#2563eb",
+                  fontSize: "16px",
+                  fontWeight: "500",
+                }}
+              >
+                📁 Click here to upload image from computer
+              </button>
+            )}
             <p style={{ fontSize: "12px", color: "#6b7280", marginTop: "8px", textAlign: "center" }}>
               Supports: JPG, PNG, GIF (max 10MB)
             </p>
