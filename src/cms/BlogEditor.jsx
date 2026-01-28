@@ -564,10 +564,14 @@ export default function BlogEditor() {
   /* ---------------- IMAGE UPLOAD ---------------- */
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
+    console.log("File selected:", file);
     if (file) {
+      const previewUrl = URL.createObjectURL(file);
+      console.log("Preview URL:", previewUrl);
       setImageFile(file); // file for backend
-      setImagePreview(URL.createObjectURL(file)); // preview only
+      setImagePreview(previewUrl); // preview only
       setExistingImageUrl("");
+      alert("Image selected: " + file.name);
     }
   };
 
