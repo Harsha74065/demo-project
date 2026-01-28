@@ -3,9 +3,7 @@ import { useNavigate } from "react-router-dom";
 import API_URL from "../config";
 
 const AuthPage = ({ onLogin }) => {
-  const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
-    name: "",
     email: "",
     password: "",
   });
@@ -24,15 +22,13 @@ const AuthPage = ({ onLogin }) => {
     setError("");
 
     try {
-      const endpoint = isLogin ? "/api/auth/login" : "/api/auth/register";
-      const body = isLogin
-        ? { email: formData.email, password: formData.password }
-        : formData;
-
-      const res = await fetch(`${API_URL}${endpoint}`, {
+      const res = await fetch(`${API_URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
       });
 
       const data = await res.json();
@@ -41,18 +37,16 @@ const AuthPage = ({ onLogin }) => {
         throw new Error(data.message || "Something went wrong");
       }
 
-      if (isLogin) {
-        // Save token and user to localStorage
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("user", JSON.stringify(data.user));
-        onLogin(data.user);
-        navigate("/cms");
-      } else {
-        // Registration successful, switch to login
-        setIsLogin(true);
-        setFormData({ name: "", email: "", password: "" });
-        alert("Registration successful! Please login.");
+      // Check if user is admin
+      if (data.user.role !== "admin") {
+        throw new Error("Access denied. Admin only.");
       }
+
+      // Save token and user to localStorage
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+      onLogin(data.user);
+      navigate("/cms");
     } catch (err) {
       setError(err.message);
     } finally {
@@ -69,32 +63,13 @@ const AuthPage = ({ onLogin }) => {
             alt="Dexter Logo"
             style={styles.logo}
           />
-          <h1 style={styles.title}>
-            {isLogin ? "Welcome Back" : "Create Account"}
-          </h1>
+          <h1 style={styles.title}>Admin Login</h1>
           <p style={styles.subtitle}>
-            {isLogin
-              ? "Sign in to manage your blogs"
-              : "Register to start writing blogs"}
+            Sign in to manage blogs and content
           </p>
         </div>
 
         <form onSubmit={handleSubmit} style={styles.form}>
-          {!isLogin && (
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Full Name</label>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                placeholder="Enter your name"
-                required={!isLogin}
-                style={styles.input}
-              />
-            </div>
-          )}
-
           <div style={styles.inputGroup}>
             <label style={styles.label}>Email</label>
             <input
@@ -102,7 +77,7 @@ const AuthPage = ({ onLogin }) => {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              placeholder="Enter your email"
+              placeholder="Enter admin email"
               required
               style={styles.input}
             />
@@ -115,7 +90,7 @@ const AuthPage = ({ onLogin }) => {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              placeholder="Enter your password"
+              placeholder="Enter password"
               required
               style={styles.input}
             />
@@ -124,27 +99,13 @@ const AuthPage = ({ onLogin }) => {
           {error && <p style={styles.error}>{error}</p>}
 
           <button type="submit" style={styles.button} disabled={loading}>
-            {loading ? "Please wait..." : isLogin ? "Sign In" : "Register"}
+            {loading ? "Please wait..." : "Sign In"}
           </button>
         </form>
 
-        <p style={styles.switchText}>
-          {isLogin ? "Don't have an account? " : "Already have an account? "}
-          <span
-            style={styles.switchLink}
-            onClick={() => {
-              setIsLogin(!isLogin);
-              setError("");
-              setFormData({ name: "", email: "", password: "" });
-            }}
-          >
-            {isLogin ? "Register" : "Sign In"}
-          </span>
-        </p>
-
         <div style={styles.publicLink}>
           <a href="/blogs" style={styles.blogLink}>
-            📖 View Public Blogs
+            View Public Blogs
           </a>
         </div>
       </div>
@@ -232,20 +193,9 @@ const styles = {
     borderRadius: "6px",
     border: "1px solid #fed7d7",
   },
-  switchText: {
-    textAlign: "center",
-    marginTop: "24px",
-    color: "#718096",
-    fontSize: "14px",
-  },
-  switchLink: {
-    color: "#38b2ac",
-    fontWeight: "600",
-    cursor: "pointer",
-  },
   publicLink: {
     textAlign: "center",
-    marginTop: "20px",
+    marginTop: "24px",
     paddingTop: "20px",
     borderTop: "1px solid #e2e8f0",
   },

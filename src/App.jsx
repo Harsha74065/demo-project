@@ -58,13 +58,11 @@ function App() {
         <Route element={<DashboardLayout user={user} onLogout={handleLogout} />}>
           <Route path="/" element={<Navigate to="/cms" />} />
           <Route path="/dashboard" element={<h2>Dashboard Working ✅</h2>} />
-          <Route path="/cms" element={<CMSPage user={user} />} />
+          <Route path="/cms" element={<CMSPage />} />
           <Route path="/cms/blog/:id" element={<BlogDetail />} />
           <Route path="/cms/editor" element={<BlogEditor user={user} />} />
           <Route path="/cms/editor/:id" element={<BlogEditor user={user} />} />
-          {user.role === "admin" && (
-            <Route path="/admin/users" element={<AdminUsers />} />
-          )}
+          <Route path="/admin/users" element={<AdminUsers />} />
         </Route>
       ) : (
         <Route path="*" element={<Navigate to="/login" />} />

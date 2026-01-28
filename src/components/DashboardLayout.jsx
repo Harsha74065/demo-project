@@ -22,7 +22,8 @@ export default function DashboardLayout({ user, onLogout }) {
   const isActive = (path) =>
     pathname.startsWith(path) ? "active" : "";
 
-  const baseMenuItems = [
+  // Admin menu items (only admin can login now)
+  const menuItems = [
     { icon: icons.dashboard, label: "Dashboard", path: "/dashboard" },
     { icon: icons.investors, label: "Investors", path: "/investors" },
     { icon: icons.tracker, label: "Master Investor\nTracker", path: "/tracker" },
@@ -30,16 +31,11 @@ export default function DashboardLayout({ user, onLogout }) {
     { icon: icons.pipeline, label: "Pipeline", path: "/pipeline" },
     { icon: icons.mandates, label: "Mandates", path: "/mandates" },
     { icon: icons.inbox, label: "Inbox", path: "/inbox" },
-    { icon: icons.users, label: "Users", path: "/users" },
+    { icon: icons.users, label: "Manage Users", path: "/admin/users" },
     { icon: icons.profile, label: "Profile", path: "/profile" },
-    { icon: icons.cmsDelta, label: "CMS (Delta)", path: "/cms", hasIndicator: true },
+    { icon: icons.cmsDelta, label: "CMS (Blogs)", path: "/cms", hasIndicator: true },
     { icon: icons.settings, label: "Settings", path: "/settings" },
   ];
-
-  // Add admin menu items if user is admin
-  const menuItems = user?.role === "admin" 
-    ? [...baseMenuItems.slice(0, -1), { icon: icons.people, label: "Manage Users", path: "/admin/users" }, baseMenuItems[baseMenuItems.length - 1]]
-    : baseMenuItems;
 
   return (
     <div className="cms-layout">

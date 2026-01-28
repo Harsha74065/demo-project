@@ -10,7 +10,7 @@ const stripHtml = (html) => {
   return tmp.textContent || tmp.innerText || "";
 };
 
-export default function CMSPage({ user }) {
+export default function CMSPage() {
   const navigate = useNavigate();
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -94,11 +94,7 @@ export default function CMSPage({ user }) {
   return (
     <div className="cms-page">
       <h1>Content Management System</h1>
-      <p>
-        {user?.role === "admin" 
-          ? "Manage all blogs and website content" 
-          : "Manage your blogs and website content"}
-      </p>
+      <p>Manage all blogs and website content</p>
 
       <div style={{ display: "flex", gap: "12px", marginBottom: "16px" }}>
         <button
@@ -144,7 +140,7 @@ export default function CMSPage({ user }) {
           fontWeight: "600",
           marginBottom: "8px"
         }}>
-          {user?.role === "admin" ? "All Blogs" : "My Blogs"}
+All Blogs
         </div>
 
         {blogs.length === 0 ? (
@@ -238,8 +234,8 @@ export default function CMSPage({ user }) {
                     {stripHtml(blog.content).substring(0, 100)}...
                   </p>
                   
-                  {/* Author info for admin */}
-                  {user?.role === "admin" && blog.authorName && (
+                  {/* Author info */}
+                  {blog.authorName && (
                     <div style={{ fontSize: "11px", color: "#8b5cf6", marginTop: "4px" }}>
                       By: {blog.authorName}
                     </div>

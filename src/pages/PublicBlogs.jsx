@@ -41,7 +41,7 @@ const PublicBlogs = () => {
     return (
       <div style={styles.loadingContainer}>
         <div style={styles.spinner}></div>
-        <p>Loading blogs...</p>
+        <p>Loading...</p>
       </div>
     );
   }
@@ -51,73 +51,166 @@ const PublicBlogs = () => {
       {/* Header */}
       <header style={styles.header}>
         <div style={styles.headerContent}>
-          <Link to="/" style={styles.logoLink}>
+          <div style={styles.logoSection}>
             <img
               src="https://www.dfrpms.com/images/Dexter-Capital-Advisors-logo.png"
-              alt="Dexter Logo"
+              alt="Dexter Capital Advisors"
               style={styles.logo}
             />
-          </Link>
+            <div style={styles.logoDivider}></div>
+            <div style={styles.deltaLogo}>
+              <span style={styles.deltaIcon}>&#9650;</span>
+              <div style={styles.deltaText}>
+                <span style={styles.deltaTitle}>DELTA</span>
+                <span style={styles.deltaSubtitle}>Investment Advisors</span>
+              </div>
+            </div>
+          </div>
           <nav style={styles.nav}>
-            <Link to="/login" style={styles.navLink}>
-              Login
-            </Link>
+            <a href="#about" style={styles.navLink}>About Us</a>
+            <a href="#team" style={styles.navLink}>Team</a>
+            <a href="#insights" style={styles.navLinkActive}>Insights</a>
+            <a href="#ipo" style={styles.navLink}>IPO Overview</a>
+            <a href="#careers" style={styles.navLink}>Careers</a>
+            <a href="#contact" style={styles.navLink}>Contact Us</a>
           </nav>
         </div>
       </header>
 
       {/* Hero Section */}
       <section style={styles.hero}>
-        <h1 style={styles.heroTitle}>Insights & Blogs</h1>
-        <p style={styles.heroSubtitle}>
-          Discover valuable insights on investing, markets, and more
-        </p>
+        <div style={styles.heroOverlay}>
+          <h1 style={styles.heroTitle}>
+            Investing with<br />
+            first-principles thinking
+          </h1>
+          <p style={styles.heroSubtitle}>
+            We want to be part owners of great businesses which are run by exceptional
+            people and are available at a reasonable valuation
+          </p>
+        </div>
       </section>
 
-      {/* Blogs Grid */}
-      <main style={styles.main}>
+      {/* Investment Philosophy */}
+      <section style={styles.philosophySection}>
+        <h2 style={styles.sectionTitle}>Investment Philosophy</h2>
+        <p style={styles.philosophyText}>
+          Our investment philosophy is grounded in value investing principles and fundamental 
+          business understanding, as a result we are extremely selective about our investments 
+          and entry valuations.
+        </p>
+        <p style={styles.philosophyText}>
+          We believe the market seldom offers high-quality businesses at reasonable valuation 
+          and so our approach is to have the most comprehensive coverage and astute monitoring.
+        </p>
+
+        <div style={styles.featuresGrid}>
+          <div style={styles.featureCard}>
+            <div style={styles.featureIcon}>🎯</div>
+            <h3 style={styles.featureTitle}>Circle of Competence</h3>
+          </div>
+          <div style={styles.featureCard}>
+            <div style={styles.featureIcon}>🔍</div>
+            <h3 style={styles.featureTitle}>Extensive Primary Research</h3>
+          </div>
+          <div style={styles.featureCard}>
+            <div style={styles.featureIcon}>📊</div>
+            <h3 style={styles.featureTitle}>Data Driven Decision Making</h3>
+          </div>
+          <div style={styles.featureCard}>
+            <div style={styles.featureIcon}>🔗</div>
+            <h3 style={styles.featureTitle}>Leveraging Network for Insights</h3>
+          </div>
+        </div>
+      </section>
+
+      {/* Insights / Blogs Section */}
+      <section id="insights" style={styles.insightsSection}>
+        <h2 style={styles.sectionTitle}>Insights & Blogs</h2>
+        
         {blogs.length === 0 ? (
           <div style={styles.noBlogs}>
             <p>No blogs published yet. Check back soon!</p>
           </div>
         ) : (
-          <div style={styles.grid}>
+          <div style={styles.blogsGrid}>
             {blogs.map((blog) => (
               <Link
                 key={blog._id}
                 to={`/blog/${blog._id}`}
-                style={styles.card}
+                style={styles.blogCard}
               >
                 {blog.imageUrl && (
-                  <div style={styles.imageContainer}>
+                  <div style={styles.blogImageContainer}>
                     <img
                       src={blog.imageUrl}
                       alt={blog.title}
-                      style={styles.cardImage}
+                      style={styles.blogImage}
                     />
                   </div>
                 )}
-                <div style={styles.cardContent}>
-                  <h2 style={styles.cardTitle}>{blog.title}</h2>
-                  <p style={styles.cardExcerpt}>
-                    {stripHtml(blog.content).substring(0, 150)}...
+                <div style={styles.blogContent}>
+                  <h3 style={styles.blogTitle}>{blog.title}</h3>
+                  <p style={styles.blogExcerpt}>
+                    {stripHtml(blog.content).substring(0, 120)}...
                   </p>
-                  <div style={styles.cardMeta}>
-                    <span style={styles.author}>
-                      By {blog.authorName || "Admin"}
-                    </span>
-                    <span style={styles.date}>{formatDate(blog.createdAt)}</span>
+                  <div style={styles.blogMeta}>
+                    <span>{formatDate(blog.createdAt)}</span>
+                    <span style={styles.readMore}>Read More →</span>
                   </div>
                 </div>
               </Link>
             ))}
           </div>
         )}
-      </main>
+      </section>
 
       {/* Footer */}
       <footer style={styles.footer}>
-        <p>© 2026 Delta Investment Advisors. All Rights Reserved.</p>
+        <div style={styles.footerContent}>
+          <div style={styles.footerSection}>
+            <div style={styles.footerLogo}>
+              <span style={styles.deltaIcon}>&#9650;</span>
+              <div style={styles.deltaText}>
+                <span style={styles.deltaTitle}>DELTA</span>
+                <span style={styles.deltaSubtitle}>Investment Advisors</span>
+              </div>
+            </div>
+            <p style={styles.footerSocial}>Find us on:</p>
+            <div style={styles.socialIcons}>
+              <a href="#" style={styles.socialLink}>𝕏</a>
+              <a href="#" style={styles.socialLink}>in</a>
+            </div>
+          </div>
+
+          <div style={styles.footerSection}>
+            <h4 style={styles.footerTitle}>Overview</h4>
+            <a href="#about" style={styles.footerLink}>About Us</a>
+            <a href="#team" style={styles.footerLink}>Team</a>
+            <a href="#insights" style={styles.footerLink}>Insights</a>
+            <a href="#careers" style={styles.footerLink}>Careers</a>
+            <a href="#contact" style={styles.footerLink}>Contact Us</a>
+          </div>
+
+          <div style={styles.footerSection}>
+            <h4 style={styles.footerTitle}>Other Dexter Entities</h4>
+            <a href="#" style={styles.footerLink}>Dexter Capital Advisors</a>
+            <a href="#" style={styles.footerLink}>Dexter Ventures</a>
+            <a href="#" style={styles.footerLink}>Discover Ventures</a>
+            <a href="#" style={styles.footerLink}>Dexter Foundation</a>
+          </div>
+        </div>
+
+        <div style={styles.disclaimer}>
+          <p>
+            Disclaimer: We are not SEBI registered Investment Advisor. No content on this 
+            website should be taken as a recommendation.
+          </p>
+        </div>
+
+        <div style={styles.copyright}>
+          <p>© 2026 Delta Investment Advisors All Rights Reserved.</p>
+        </div>
       </footer>
     </div>
   );
@@ -126,7 +219,8 @@ const PublicBlogs = () => {
 const styles = {
   container: {
     minHeight: "100vh",
-    background: "#f7fafc",
+    background: "#fff",
+    fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
   },
   loadingContainer: {
     display: "flex",
@@ -140,78 +234,174 @@ const styles = {
     width: "40px",
     height: "40px",
     border: "4px solid #e2e8f0",
-    borderTop: "4px solid #38b2ac",
+    borderTop: "4px solid #c41e3a",
     borderRadius: "50%",
     animation: "spin 1s linear infinite",
   },
+
+  // Header
   header: {
     background: "#fff",
-    borderBottom: "1px solid #e2e8f0",
-    padding: "15px 0",
+    borderBottom: "1px solid #e5e7eb",
+    padding: "12px 0",
     position: "sticky",
     top: 0,
     zIndex: 100,
   },
   headerContent: {
-    maxWidth: "1200px",
+    maxWidth: "1280px",
     margin: "0 auto",
-    padding: "0 20px",
+    padding: "0 24px",
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
   },
-  logoLink: {
-    textDecoration: "none",
+  logoSection: {
+    display: "flex",
+    alignItems: "center",
+    gap: "16px",
   },
   logo: {
+    height: "45px",
+  },
+  logoDivider: {
+    width: "1px",
     height: "40px",
+    background: "#d1d5db",
+  },
+  deltaLogo: {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+  },
+  deltaIcon: {
+    color: "#c41e3a",
+    fontSize: "28px",
+  },
+  deltaText: {
+    display: "flex",
+    flexDirection: "column",
+  },
+  deltaTitle: {
+    fontSize: "20px",
+    fontWeight: "700",
+    color: "#1f2937",
+    letterSpacing: "2px",
+  },
+  deltaSubtitle: {
+    fontSize: "10px",
+    color: "#6b7280",
+    letterSpacing: "0.5px",
   },
   nav: {
     display: "flex",
-    gap: "20px",
+    gap: "32px",
   },
   navLink: {
-    color: "#4a5568",
+    color: "#374151",
     textDecoration: "none",
+    fontSize: "15px",
     fontWeight: "500",
-    padding: "8px 16px",
-    borderRadius: "6px",
-    background: "#edf2f7",
-    transition: "background 0.2s",
+    transition: "color 0.2s",
   },
+  navLinkActive: {
+    color: "#c41e3a",
+    textDecoration: "none",
+    fontSize: "15px",
+    fontWeight: "600",
+  },
+
+  // Hero
   hero: {
-    background: "linear-gradient(135deg, #1a365d 0%, #2d3748 100%)",
-    color: "#fff",
-    padding: "60px 20px",
-    textAlign: "center",
+    backgroundImage: "linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1600')",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    minHeight: "500px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    padding: "60px",
+  },
+  heroOverlay: {
+    maxWidth: "600px",
   },
   heroTitle: {
-    margin: "0 0 10px 0",
-    fontSize: "36px",
+    color: "#fff",
+    fontSize: "48px",
     fontWeight: "700",
+    lineHeight: "1.2",
+    margin: "0 0 24px 0",
   },
   heroSubtitle: {
-    margin: 0,
+    color: "rgba(255,255,255,0.9)",
     fontSize: "18px",
-    opacity: 0.9,
+    lineHeight: "1.6",
+    margin: 0,
   },
-  main: {
+
+  // Philosophy Section
+  philosophySection: {
     maxWidth: "1200px",
     margin: "0 auto",
-    padding: "40px 20px",
+    padding: "80px 24px",
+  },
+  sectionTitle: {
+    fontSize: "32px",
+    fontWeight: "700",
+    color: "#1f2937",
+    marginBottom: "24px",
+  },
+  philosophyText: {
+    fontSize: "16px",
+    color: "#4b5563",
+    lineHeight: "1.8",
+    marginBottom: "16px",
+    maxWidth: "900px",
+  },
+  featuresGrid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(4, 1fr)",
+    gap: "24px",
+    marginTop: "60px",
+  },
+  featureCard: {
+    background: "#fff",
+    border: "1px solid #e5e7eb",
+    borderRadius: "12px",
+    padding: "40px 24px",
+    textAlign: "center",
+    transition: "box-shadow 0.2s",
+  },
+  featureIcon: {
+    fontSize: "48px",
+    marginBottom: "16px",
+  },
+  featureTitle: {
+    fontSize: "16px",
+    fontWeight: "600",
+    color: "#1f2937",
+    margin: 0,
+  },
+
+  // Insights Section
+  insightsSection: {
+    background: "#f9fafb",
+    padding: "80px 24px",
   },
   noBlogs: {
     textAlign: "center",
     padding: "60px 20px",
-    color: "#718096",
+    color: "#6b7280",
     fontSize: "18px",
   },
-  grid: {
+  blogsGrid: {
+    maxWidth: "1200px",
+    margin: "40px auto 0",
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fill, minmax(350px, 1fr))",
+    gridTemplateColumns: "repeat(3, 1fr)",
     gap: "30px",
   },
-  card: {
+  blogCard: {
     background: "#fff",
     borderRadius: "12px",
     overflow: "hidden",
@@ -220,47 +410,113 @@ const styles = {
     boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
     transition: "transform 0.2s, box-shadow 0.2s",
   },
-  imageContainer: {
+  blogImageContainer: {
     height: "200px",
     overflow: "hidden",
   },
-  cardImage: {
+  blogImage: {
     width: "100%",
     height: "100%",
     objectFit: "cover",
   },
-  cardContent: {
+  blogContent: {
     padding: "24px",
   },
-  cardTitle: {
+  blogTitle: {
     margin: "0 0 12px 0",
-    fontSize: "20px",
+    fontSize: "18px",
     fontWeight: "600",
-    color: "#1a365d",
+    color: "#1f2937",
     lineHeight: "1.4",
   },
-  cardExcerpt: {
+  blogExcerpt: {
     margin: "0 0 16px 0",
-    color: "#718096",
+    color: "#6b7280",
     fontSize: "14px",
     lineHeight: "1.6",
   },
-  cardMeta: {
+  blogMeta: {
     display: "flex",
     justifyContent: "space-between",
     fontSize: "13px",
-    color: "#a0aec0",
+    color: "#9ca3af",
   },
-  author: {
+  readMore: {
+    color: "#c41e3a",
     fontWeight: "500",
   },
-  date: {},
+
+  // Footer
   footer: {
-    background: "#1a365d",
+    background: "#f9fafb",
+    borderTop: "1px solid #e5e7eb",
+  },
+  footerContent: {
+    maxWidth: "1200px",
+    margin: "0 auto",
+    padding: "60px 24px",
+    display: "grid",
+    gridTemplateColumns: "2fr 1fr 1fr",
+    gap: "60px",
+  },
+  footerSection: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "12px",
+  },
+  footerLogo: {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+    marginBottom: "20px",
+  },
+  footerSocial: {
+    color: "#4b5563",
+    fontSize: "14px",
+    margin: "16px 0 8px",
+  },
+  socialIcons: {
+    display: "flex",
+    gap: "12px",
+  },
+  socialLink: {
+    width: "36px",
+    height: "36px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    background: "#1f2937",
     color: "#fff",
+    borderRadius: "4px",
+    textDecoration: "none",
+    fontSize: "14px",
+    fontWeight: "600",
+  },
+  footerTitle: {
+    fontSize: "16px",
+    fontWeight: "600",
+    color: "#1f2937",
+    marginBottom: "8px",
+  },
+  footerLink: {
+    color: "#4b5563",
+    textDecoration: "none",
+    fontSize: "14px",
+    padding: "4px 0",
+  },
+  disclaimer: {
+    background: "#374151",
+    color: "#fff",
+    padding: "20px 24px",
+    textAlign: "center",
+    fontSize: "14px",
+  },
+  copyright: {
+    background: "#f9fafb",
     textAlign: "center",
     padding: "20px",
-    marginTop: "40px",
+    color: "#6b7280",
+    fontSize: "14px",
   },
 };
 
