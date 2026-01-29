@@ -289,6 +289,7 @@ const styles = {
   },
   dropdown: {
     position: "relative",
+    padding: "10px 0",
   },
   dropdownContent: {
     position: "absolute",
@@ -300,7 +301,6 @@ const styles = {
     borderRadius: "8px",
     padding: "8px 0",
     zIndex: 1000,
-    marginTop: "8px",
   },
   dropdownItem: {
     display: "block",
