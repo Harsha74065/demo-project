@@ -102,8 +102,27 @@ const BlogsPage = () => {
         </div>
       </header>
 
+      {/* Quarterly Newsletters Section */}
+      <section style={styles.newsletterSection}>
+        <h1 style={styles.sectionTitle}>Quarterly Newsletters</h1>
+        <div style={styles.yearButton}>2025</div>
+        <div style={styles.newsletterGrid}>
+          <div style={styles.newsletterCard}>
+            <div style={styles.newsletterHeader}>
+              <img src="https://www.deltainvest.in/images/delta-logo-white.png" alt="Delta" style={styles.newsletterLogo} />
+            </div>
+            <div style={styles.newsletterContent}>
+              <h3 style={styles.newsletterTitle}>
+                <span style={styles.quarterHighlight}>Q1</span> Newsletter
+              </h3>
+              <span style={styles.yearBadge}>2025</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Blogs Section */}
-      <section style={styles.blogsSection}>
+      <section id="blogs" style={styles.blogsSection}>
         <h1 style={styles.pageTitle}>Blogs</h1>
         
         {blogs.length === 0 ? (
@@ -309,6 +328,67 @@ const styles = {
     fontSize: "15px",
     cursor: "pointer",
     borderBottom: "1px solid #f3f4f6",
+  },
+
+  // Newsletter Section
+  newsletterSection: {
+    background: "#FEE2E2",
+    padding: "60px 24px",
+  },
+  sectionTitle: {
+    fontSize: "32px",
+    fontWeight: "700",
+    color: "#1f2937",
+    maxWidth: "1200px",
+    margin: "0 auto 30px",
+  },
+  yearButton: {
+    background: "#c41e3a",
+    color: "#fff",
+    padding: "12px 32px",
+    borderRadius: "25px",
+    display: "inline-block",
+    fontSize: "16px",
+    fontWeight: "600",
+    maxWidth: "1200px",
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
+  newsletterGrid: {
+    maxWidth: "1200px",
+    margin: "40px auto 0",
+  },
+  newsletterCard: {
+    width: "280px",
+    background: "linear-gradient(135deg, #f472b6 0%, #ec4899 100%)",
+    borderRadius: "12px",
+    overflow: "hidden",
+    boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
+  },
+  newsletterHeader: {
+    padding: "20px",
+    textAlign: "right",
+  },
+  newsletterLogo: {
+    height: "30px",
+  },
+  newsletterContent: {
+    padding: "20px",
+    color: "#fff",
+  },
+  newsletterTitle: {
+    fontSize: "24px",
+    fontWeight: "600",
+    margin: "0 0 10px 0",
+  },
+  quarterHighlight: {
+    color: "#c41e3a",
+  },
+  yearBadge: {
+    background: "rgba(0,0,0,0.2)",
+    padding: "4px 12px",
+    borderRadius: "4px",
+    fontSize: "14px",
   },
 
   // Blogs Section
