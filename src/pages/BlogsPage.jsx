@@ -80,17 +80,20 @@ const BlogsPage = () => {
           <nav style={styles.nav}>
             <Link to="/" style={styles.navLink}>About Us</Link>
             <Link to="/" style={styles.navLink}>Team</Link>
-            <div 
-              style={styles.dropdown}
-              onMouseEnter={() => setShowDropdown(true)}
-              onMouseLeave={() => setShowDropdown(false)}
-            >
-              <span style={styles.navLinkActive}>Insights ▼</span>
-              <div style={{...styles.dropdownContent, display: showDropdown ? 'block' : 'none'}}>
-                <a href="#newsletters" style={styles.dropdownItem}>Quarterly Newsletters</a>
-                <a href="#perspectives" style={styles.dropdownItem}>Company Perspective</a>
-                <Link to="/blogs" style={styles.dropdownItem}>Blogs</Link>
-              </div>
+            <div style={styles.dropdown}>
+              <span 
+                style={styles.navLinkActive}
+                onClick={() => setShowDropdown(!showDropdown)}
+              >
+                Insights ▼
+              </span>
+              {showDropdown && (
+                <div style={styles.dropdownContent}>
+                  <a href="#newsletters" style={styles.dropdownItem} onClick={() => setShowDropdown(false)}>Quarterly Newsletters</a>
+                  <a href="#perspectives" style={styles.dropdownItem} onClick={() => setShowDropdown(false)}>Company Perspective</a>
+                  <Link to="/blogs" style={styles.dropdownItem} onClick={() => setShowDropdown(false)}>Blogs</Link>
+                </div>
+              )}
             </div>
             <Link to="/" style={styles.navLink}>IPO Overview</Link>
             <Link to="/" style={styles.navLink}>Careers</Link>
@@ -286,27 +289,26 @@ const styles = {
   },
   dropdown: {
     position: "relative",
-    cursor: "pointer",
   },
   dropdownContent: {
     position: "absolute",
-    top: "20px",
+    top: "30px",
     left: "-20px",
     background: "#fff",
     minWidth: "220px",
-    boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
+    boxShadow: "0 8px 24px rgba(0,0,0,0.15)",
     borderRadius: "8px",
-    padding: "16px 0",
+    padding: "8px 0",
     zIndex: 1000,
-    paddingTop: "24px",
   },
   dropdownItem: {
     display: "block",
-    padding: "12px 24px",
+    padding: "14px 24px",
     color: "#374151",
     textDecoration: "none",
-    fontSize: "14px",
+    fontSize: "15px",
     cursor: "pointer",
+    borderBottom: "1px solid #f3f4f6",
   },
 
   // Blogs Section
