@@ -112,11 +112,6 @@ const BlogsPage = () => {
             <Link to="/" style={styles.navLink}>IPO Overview</Link>
             <Link to="/" style={styles.navLink}>Careers</Link>
             <Link to="/" style={styles.navLink}>Contact Us</Link>
-            {isAdmin && (
-              <Link to="/cms" style={{...styles.navLink, background: "#c41e3a", color: "#fff", padding: "8px 16px", borderRadius: "6px", marginLeft: "10px"}}>
-                ← Back to Admin
-              </Link>
-            )}
           </nav>
         </div>
       </header>
