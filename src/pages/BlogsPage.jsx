@@ -111,17 +111,31 @@ const BlogsPage = () => {
       {/* Quarterly Newsletters Section */}
       <section style={styles.newsletterSection}>
         <h1 style={styles.sectionTitle}>Quarterly Newsletters</h1>
-        <div style={styles.yearButton}>2025</div>
+        <div style={styles.yearButtonContainer}>
+          <div style={styles.yearButton}>2026</div>
+        </div>
         <div style={styles.newsletterGrid}>
           <div style={styles.newsletterCard}>
-            <div style={styles.newsletterHeader}>
-              <img src="https://www.deltainvest.in/images/delta-logo-white.png" alt="Delta" style={styles.newsletterLogo} />
-            </div>
-            <div style={styles.newsletterContent}>
-              <h3 style={styles.newsletterTitle}>
-                <span style={styles.quarterHighlight}>Q1</span> Newsletter
-              </h3>
-              <span style={styles.yearBadge}>2025</span>
+            <div style={styles.newsletterCardInner}>
+              <div style={styles.newsletterHeader}>
+                <div style={styles.deltaLogoSmall}>
+                  <span style={{color: "#c41e3a", fontSize: "20px"}}>▲</span>
+                  <span style={{fontWeight: "700", color: "#1f2937", marginLeft: "6px"}}>DELTA</span>
+                </div>
+              </div>
+              <div style={styles.newsletterContent}>
+                <h3 style={styles.newsletterTitle}>
+                  <span style={styles.quarterHighlight}>Q1</span> Newsletter
+                </h3>
+                <span style={styles.yearBadge}>2026</span>
+              </div>
+              <div style={styles.newsletterImage}>
+                <img 
+                  src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=300" 
+                  alt="Newsletter" 
+                  style={{width: "100%", height: "120px", objectFit: "cover", borderRadius: "8px"}}
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -339,7 +353,7 @@ const styles = {
   // Newsletter Section
   newsletterSection: {
     background: "#FEE2E2",
-    padding: "60px 24px",
+    padding: "60px 24px 40px",
   },
   sectionTitle: {
     fontSize: "32px",
@@ -348,53 +362,68 @@ const styles = {
     maxWidth: "1200px",
     margin: "0 auto 30px",
   },
+  yearButtonContainer: {
+    maxWidth: "1200px",
+    margin: "0 auto",
+  },
   yearButton: {
     background: "#c41e3a",
     color: "#fff",
-    padding: "12px 32px",
-    borderRadius: "25px",
+    padding: "14px 40px",
+    borderRadius: "30px",
     display: "inline-block",
-    fontSize: "16px",
-    fontWeight: "600",
-    maxWidth: "1200px",
-    marginLeft: "auto",
-    marginRight: "auto",
+    fontSize: "18px",
+    fontWeight: "700",
+    cursor: "pointer",
   },
   newsletterGrid: {
     maxWidth: "1200px",
     margin: "40px auto 0",
   },
   newsletterCard: {
-    width: "280px",
-    background: "linear-gradient(135deg, #f472b6 0%, #ec4899 100%)",
-    borderRadius: "12px",
+    width: "300px",
+  },
+  newsletterCardInner: {
+    background: "linear-gradient(145deg, #f9a8d4 0%, #ec4899 100%)",
+    borderRadius: "16px",
     overflow: "hidden",
-    boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
+    boxShadow: "0 8px 30px rgba(236, 72, 153, 0.3)",
+    padding: "24px",
   },
   newsletterHeader: {
-    padding: "20px",
-    textAlign: "right",
+    marginBottom: "20px",
   },
-  newsletterLogo: {
-    height: "30px",
+  deltaLogoSmall: {
+    display: "flex",
+    alignItems: "center",
+    background: "#fff",
+    padding: "8px 16px",
+    borderRadius: "8px",
+    width: "fit-content",
+    marginLeft: "auto",
   },
   newsletterContent: {
-    padding: "20px",
     color: "#fff",
+    marginBottom: "20px",
   },
   newsletterTitle: {
-    fontSize: "24px",
+    fontSize: "28px",
     fontWeight: "600",
-    margin: "0 0 10px 0",
+    margin: "0 0 12px 0",
+    color: "#fff",
   },
   quarterHighlight: {
     color: "#c41e3a",
   },
   yearBadge: {
-    background: "rgba(0,0,0,0.2)",
-    padding: "4px 12px",
-    borderRadius: "4px",
+    background: "rgba(0,0,0,0.25)",
+    padding: "6px 14px",
+    borderRadius: "6px",
     fontSize: "14px",
+    fontWeight: "600",
+  },
+  newsletterImage: {
+    marginTop: "10px",
   },
 
   // Blogs Section
