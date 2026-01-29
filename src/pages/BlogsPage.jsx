@@ -6,10 +6,16 @@ const BlogsPage = () => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchBlogs();
+    // Check if admin is logged in
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsAdmin(true);
+    }
   }, []);
 
   const fetchBlogs = async () => {
@@ -106,6 +112,11 @@ const BlogsPage = () => {
             <Link to="/" style={styles.navLink}>IPO Overview</Link>
             <Link to="/" style={styles.navLink}>Careers</Link>
             <Link to="/" style={styles.navLink}>Contact Us</Link>
+            {isAdmin && (
+              <Link to="/cms" style={{...styles.navLink, background: "#c41e3a", color: "#fff", padding: "8px 16px", borderRadius: "6px", marginLeft: "10px"}}>
+                ← Back to Admin
+              </Link>
+            )}
           </nav>
         </div>
       </header>
