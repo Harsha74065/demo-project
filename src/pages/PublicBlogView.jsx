@@ -97,14 +97,12 @@ const PublicBlogView = () => {
               onMouseEnter={() => setShowDropdown(true)}
               onMouseLeave={() => setShowDropdown(false)}
             >
-              <span style={styles.navLinkActive}>Insights</span>
-              {showDropdown && (
-                <div style={styles.dropdownContent}>
-                  <a href="/#newsletters" style={styles.dropdownItem}>Quarterly Newsletters</a>
-                  <a href="/#perspectives" style={styles.dropdownItem}>Company Perspective</a>
-                  <Link to="/#insights" style={styles.dropdownItem}>Blogs</Link>
-                </div>
-              )}
+              <span style={styles.navLinkActive}>Insights ▼</span>
+              <div style={{...styles.dropdownContent, display: showDropdown ? 'block' : 'none'}}>
+                <a href="/#newsletters" style={styles.dropdownItem}>Quarterly Newsletters</a>
+                <a href="/#perspectives" style={styles.dropdownItem}>Company Perspective</a>
+                <Link to="/blogs" style={styles.dropdownItem}>Blogs</Link>
+              </div>
             </div>
             <a href="/#ipo" style={styles.navLink}>IPO Overview</a>
             <a href="/#careers" style={styles.navLink}>Careers</a>
@@ -289,25 +287,27 @@ const styles = {
   },
   dropdown: {
     position: "relative",
-    padding: "10px 0",
+    cursor: "pointer",
   },
   dropdownContent: {
     position: "absolute",
-    top: "100%",
+    top: "20px",
     left: "-20px",
     background: "#fff",
     minWidth: "220px",
     boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
     borderRadius: "8px",
-    padding: "8px 0",
+    padding: "16px 0",
     zIndex: 1000,
+    paddingTop: "24px",
   },
   dropdownItem: {
     display: "block",
-    padding: "10px 20px",
+    padding: "12px 24px",
     color: "#374151",
     textDecoration: "none",
     fontSize: "14px",
+    cursor: "pointer",
   },
 
   // Article
