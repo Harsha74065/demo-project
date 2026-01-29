@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import API_URL from "../config";
 
-const PublicBlogs = () => {
+const BlogsPage = () => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -23,14 +23,11 @@ const PublicBlogs = () => {
     }
   };
 
-  // Fix image URLs to use correct backend
   const getImageUrl = (url) => {
     if (!url) return null;
-    // If it's a localhost URL, replace with production backend
     if (url.includes("localhost")) {
       return url.replace(/http:\/\/localhost:\d+/, API_URL);
     }
-    // If it's a relative path, prepend API_URL
     if (url.startsWith("/uploads")) {
       return `${API_URL}${url}`;
     }
@@ -38,16 +35,15 @@ const PublicBlogs = () => {
   };
 
   const stripHtml = (html) => {
-    if (!html) return "";
     const tmp = document.createElement("div");
     tmp.innerHTML = html;
     return tmp.textContent || tmp.innerText || "";
   };
 
-  const formatDate = (dateStr) => {
-    return new Date(dateStr).toLocaleDateString("en-IN", {
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString("en-GB", {
       day: "numeric",
-      month: "short",
+      month: "long",
       year: "numeric",
     });
   };
@@ -66,7 +62,7 @@ const PublicBlogs = () => {
       {/* Header */}
       <header style={styles.header}>
         <div style={styles.headerContent}>
-          <div style={styles.logoSection}>
+          <Link to="/" style={styles.logoSection}>
             <img
               src="https://www.dfrpms.com/images/Dexter-Capital-Advisors-logo.png"
               alt="Dexter Capital Advisors"
@@ -80,10 +76,10 @@ const PublicBlogs = () => {
                 <span style={styles.deltaSubtitle}>Investment Advisors</span>
               </div>
             </div>
-          </div>
+          </Link>
           <nav style={styles.nav}>
-            <a href="#about" style={styles.navLink}>About Us</a>
-            <a href="#team" style={styles.navLink}>Team</a>
+            <Link to="/#about" style={styles.navLink}>About Us</Link>
+            <Link to="/#team" style={styles.navLink}>Team</Link>
             <div 
               style={styles.dropdown}
               onMouseEnter={() => setShowDropdown(true)}
@@ -98,63 +94,16 @@ const PublicBlogs = () => {
                 </div>
               )}
             </div>
-            <a href="#ipo" style={styles.navLink}>IPO Overview</a>
-            <a href="#careers" style={styles.navLink}>Careers</a>
-            <a href="#contact" style={styles.navLink}>Contact Us</a>
+            <Link to="/#ipo" style={styles.navLink}>IPO Overview</Link>
+            <Link to="/#careers" style={styles.navLink}>Careers</Link>
+            <Link to="/#contact" style={styles.navLink}>Contact Us</Link>
           </nav>
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section style={styles.hero}>
-        <div style={styles.heroOverlay}>
-          <h1 style={styles.heroTitle}>
-            Investing with<br />
-            first-principles thinking
-          </h1>
-          <p style={styles.heroSubtitle}>
-            We want to be part owners of great businesses which are run by exceptional
-            people and are available at a reasonable valuation
-          </p>
-        </div>
-      </section>
-
-      {/* Investment Philosophy */}
-      <section style={styles.philosophySection}>
-        <h2 style={styles.sectionTitle}>Investment Philosophy</h2>
-        <p style={styles.philosophyText}>
-          Our investment philosophy is grounded in value investing principles and fundamental 
-          business understanding, as a result we are extremely selective about our investments 
-          and entry valuations.
-        </p>
-        <p style={styles.philosophyText}>
-          We believe the market seldom offers high-quality businesses at reasonable valuation 
-          and so our approach is to have the most comprehensive coverage and astute monitoring.
-        </p>
-
-        <div style={styles.featuresGrid}>
-          <div style={styles.featureCard}>
-            <div style={styles.featureIcon}>🎯</div>
-            <h3 style={styles.featureTitle}>Circle of Competence</h3>
-          </div>
-          <div style={styles.featureCard}>
-            <div style={styles.featureIcon}>🔍</div>
-            <h3 style={styles.featureTitle}>Extensive Primary Research</h3>
-          </div>
-          <div style={styles.featureCard}>
-            <div style={styles.featureIcon}>📊</div>
-            <h3 style={styles.featureTitle}>Data Driven Decision Making</h3>
-          </div>
-          <div style={styles.featureCard}>
-            <div style={styles.featureIcon}>🔗</div>
-            <h3 style={styles.featureTitle}>Leveraging Network for Insights</h3>
-          </div>
-        </div>
-      </section>
-
-      {/* Insights / Blogs Section */}
-      <section id="insights" style={styles.insightsSection}>
-        <h2 style={{...styles.sectionTitle, maxWidth: "1200px", margin: "0 auto 0"}}>Blogs</h2>
+      {/* Blogs Section */}
+      <section style={styles.blogsSection}>
+        <h1 style={styles.pageTitle}>Blogs</h1>
         
         {blogs.length === 0 ? (
           <div style={styles.noBlogs}>
@@ -186,9 +135,6 @@ const PublicBlogs = () => {
                     <span>{formatDate(blog.createdAt)}</span>
                     <span>{Math.max(1, Math.round((blog.content?.length || 0) / 300))} min read</span>
                   </div>
-                  <div style={{ marginTop: "12px", textAlign: "right" }}>
-                    <span style={styles.readMore}>Read More →</span>
-                  </div>
                 </div>
               </Link>
             ))}
@@ -216,11 +162,11 @@ const PublicBlogs = () => {
 
           <div style={styles.footerSection}>
             <h4 style={styles.footerTitle}>Overview</h4>
-            <a href="#about" style={styles.footerLink}>About Us</a>
-            <a href="#team" style={styles.footerLink}>Team</a>
-            <a href="#insights" style={styles.footerLink}>Insights</a>
-            <a href="#careers" style={styles.footerLink}>Careers</a>
-            <a href="#contact" style={styles.footerLink}>Contact Us</a>
+            <Link to="/#about" style={styles.footerLink}>About Us</Link>
+            <Link to="/#team" style={styles.footerLink}>Team</Link>
+            <Link to="/blogs" style={styles.footerLink}>Insights</Link>
+            <Link to="/#careers" style={styles.footerLink}>Careers</Link>
+            <Link to="/#contact" style={styles.footerLink}>Contact Us</Link>
           </div>
 
           <div style={styles.footerSection}>
@@ -249,9 +195,8 @@ const PublicBlogs = () => {
 
 const styles = {
   container: {
+    fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
     minHeight: "100vh",
-    background: "#fff",
-    fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
   },
   loadingContainer: {
     display: "flex",
@@ -259,13 +204,12 @@ const styles = {
     alignItems: "center",
     justifyContent: "center",
     minHeight: "100vh",
-    color: "#4a5568",
   },
   spinner: {
     width: "40px",
     height: "40px",
-    border: "4px solid #e2e8f0",
-    borderTop: "4px solid #c41e3a",
+    border: "4px solid #e5e7eb",
+    borderTopColor: "#c41e3a",
     borderRadius: "50%",
     animation: "spin 1s linear infinite",
   },
@@ -274,15 +218,14 @@ const styles = {
   header: {
     background: "#fff",
     borderBottom: "1px solid #e5e7eb",
-    padding: "12px 0",
+    padding: "16px 24px",
     position: "sticky",
     top: 0,
     zIndex: 100,
   },
   headerContent: {
-    maxWidth: "1280px",
+    maxWidth: "1400px",
     margin: "0 auto",
-    padding: "0 24px",
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
@@ -291,14 +234,15 @@ const styles = {
     display: "flex",
     alignItems: "center",
     gap: "16px",
+    textDecoration: "none",
   },
   logo: {
-    height: "45px",
+    height: "40px",
   },
   logoDivider: {
     width: "1px",
     height: "40px",
-    background: "#d1d5db",
+    background: "#e5e7eb",
   },
   deltaLogo: {
     display: "flex",
@@ -307,14 +251,14 @@ const styles = {
   },
   deltaIcon: {
     color: "#c41e3a",
-    fontSize: "28px",
+    fontSize: "24px",
   },
   deltaText: {
     display: "flex",
     flexDirection: "column",
   },
   deltaTitle: {
-    fontSize: "20px",
+    fontSize: "18px",
     fontWeight: "700",
     color: "#1f2937",
     letterSpacing: "2px",
@@ -327,13 +271,13 @@ const styles = {
   nav: {
     display: "flex",
     gap: "32px",
+    alignItems: "center",
   },
   navLink: {
     color: "#374151",
     textDecoration: "none",
     fontSize: "15px",
     fontWeight: "500",
-    transition: "color 0.2s",
   },
   navLinkActive: {
     color: "#c41e3a",
@@ -363,85 +307,21 @@ const styles = {
     color: "#374151",
     textDecoration: "none",
     fontSize: "14px",
-    transition: "background 0.2s",
   },
 
-  // Hero
-  hero: {
-    backgroundImage: "linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1600')",
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    minHeight: "500px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-start",
-    padding: "60px",
+  // Blogs Section
+  blogsSection: {
+    background: "#FEE2E2",
+    padding: "60px 24px",
+    minHeight: "60vh",
   },
-  heroOverlay: {
-    maxWidth: "600px",
-  },
-  heroTitle: {
-    color: "#fff",
-    fontSize: "48px",
-    fontWeight: "700",
-    lineHeight: "1.2",
-    margin: "0 0 24px 0",
-  },
-  heroSubtitle: {
-    color: "rgba(255,255,255,0.9)",
-    fontSize: "18px",
-    lineHeight: "1.6",
-    margin: 0,
-  },
-
-  // Philosophy Section
-  philosophySection: {
-    maxWidth: "1200px",
-    margin: "0 auto",
-    padding: "80px 24px",
-  },
-  sectionTitle: {
+  pageTitle: {
     fontSize: "32px",
     fontWeight: "700",
     color: "#1f2937",
-    marginBottom: "24px",
-  },
-  philosophyText: {
-    fontSize: "16px",
-    color: "#4b5563",
-    lineHeight: "1.8",
-    marginBottom: "16px",
-    maxWidth: "900px",
-  },
-  featuresGrid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(4, 1fr)",
-    gap: "24px",
-    marginTop: "60px",
-  },
-  featureCard: {
-    background: "#fff",
-    border: "1px solid #e5e7eb",
-    borderRadius: "12px",
-    padding: "40px 24px",
-    textAlign: "center",
-    transition: "box-shadow 0.2s",
-  },
-  featureIcon: {
-    fontSize: "48px",
-    marginBottom: "16px",
-  },
-  featureTitle: {
-    fontSize: "16px",
-    fontWeight: "600",
-    color: "#1f2937",
-    margin: 0,
-  },
-
-  // Insights Section
-  insightsSection: {
-    background: "#FEE2E2",
-    padding: "80px 24px",
+    marginBottom: "40px",
+    maxWidth: "1200px",
+    margin: "0 auto 40px",
   },
   noBlogs: {
     textAlign: "center",
@@ -451,7 +331,7 @@ const styles = {
   },
   blogsGrid: {
     maxWidth: "1200px",
-    margin: "40px auto 0",
+    margin: "0 auto",
     display: "grid",
     gridTemplateColumns: "repeat(3, 1fr)",
     gap: "30px",
@@ -496,10 +376,6 @@ const styles = {
     fontSize: "13px",
     color: "#9ca3af",
   },
-  readMore: {
-    color: "#c41e3a",
-    fontWeight: "500",
-  },
 
   // Footer
   footer: {
@@ -511,7 +387,7 @@ const styles = {
     margin: "0 auto",
     padding: "60px 24px",
     display: "grid",
-    gridTemplateColumns: "2fr 1fr 1fr",
+    gridTemplateColumns: "1fr 1fr 1fr",
     gap: "60px",
   },
   footerSection: {
@@ -523,29 +399,28 @@ const styles = {
     display: "flex",
     alignItems: "center",
     gap: "8px",
-    marginBottom: "20px",
+    marginBottom: "16px",
   },
   footerSocial: {
-    color: "#4b5563",
+    color: "#374151",
     fontSize: "14px",
-    margin: "16px 0 8px",
+    marginTop: "16px",
   },
   socialIcons: {
     display: "flex",
     gap: "12px",
   },
   socialLink: {
-    width: "36px",
-    height: "36px",
+    width: "32px",
+    height: "32px",
+    borderRadius: "4px",
+    background: "#1f2937",
+    color: "#fff",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    background: "#1f2937",
-    color: "#fff",
-    borderRadius: "4px",
     textDecoration: "none",
     fontSize: "14px",
-    fontWeight: "600",
   },
   footerTitle: {
     fontSize: "16px",
@@ -554,25 +429,22 @@ const styles = {
     marginBottom: "8px",
   },
   footerLink: {
-    color: "#4b5563",
+    color: "#6b7280",
     textDecoration: "none",
     fontSize: "14px",
-    padding: "4px 0",
+    display: "block",
   },
   disclaimer: {
-    background: "#374151",
-    color: "#fff",
+    background: "#10b981",
     padding: "20px 24px",
     textAlign: "center",
-    fontSize: "14px",
   },
   copyright: {
-    background: "#f9fafb",
     textAlign: "center",
-    padding: "20px",
+    padding: "24px",
     color: "#6b7280",
     fontSize: "14px",
   },
 };
 
-export default PublicBlogs;
+export default BlogsPage;
