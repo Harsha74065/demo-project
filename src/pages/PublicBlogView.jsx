@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import API_URL from "../config";
 
 const PublicBlogView = () => {
@@ -8,15 +8,6 @@ const PublicBlogView = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const navigate = useNavigate();
-  
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      setIsAdmin(true);
-    }
-  }, []);
 
   useEffect(() => {
     fetchBlog();
@@ -330,7 +321,6 @@ const styles = {
     cursor: "pointer",
     borderBottom: "1px solid #f3f4f6",
     fontSize: "14px",
-    cursor: "pointer",
   },
 
   // Article
