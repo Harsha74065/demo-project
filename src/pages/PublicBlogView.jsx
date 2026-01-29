@@ -7,6 +7,7 @@ const PublicBlogView = () => {
   const [blog, setBlog] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
     fetchBlog();
@@ -91,7 +92,20 @@ const PublicBlogView = () => {
           <nav style={styles.nav}>
             <a href="/#about" style={styles.navLink}>About Us</a>
             <a href="/#team" style={styles.navLink}>Team</a>
-            <Link to="/#insights" style={styles.navLinkActive}>Insights</Link>
+            <div 
+              style={styles.dropdown}
+              onMouseEnter={() => setShowDropdown(true)}
+              onMouseLeave={() => setShowDropdown(false)}
+            >
+              <span style={styles.navLinkActive}>Insights</span>
+              {showDropdown && (
+                <div style={styles.dropdownContent}>
+                  <a href="/#newsletters" style={styles.dropdownItem}>Quarterly Newsletters</a>
+                  <a href="/#perspectives" style={styles.dropdownItem}>Company Perspective</a>
+                  <Link to="/#insights" style={styles.dropdownItem}>Blogs</Link>
+                </div>
+              )}
+            </div>
             <a href="/#ipo" style={styles.navLink}>IPO Overview</a>
             <a href="/#careers" style={styles.navLink}>Careers</a>
             <a href="/#contact" style={styles.navLink}>Contact Us</a>
@@ -271,6 +285,29 @@ const styles = {
     textDecoration: "none",
     fontSize: "15px",
     fontWeight: "600",
+    cursor: "pointer",
+  },
+  dropdown: {
+    position: "relative",
+  },
+  dropdownContent: {
+    position: "absolute",
+    top: "100%",
+    left: "-20px",
+    background: "#fff",
+    minWidth: "220px",
+    boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
+    borderRadius: "8px",
+    padding: "8px 0",
+    zIndex: 1000,
+    marginTop: "8px",
+  },
+  dropdownItem: {
+    display: "block",
+    padding: "10px 20px",
+    color: "#374151",
+    textDecoration: "none",
+    fontSize: "14px",
   },
 
   // Article
