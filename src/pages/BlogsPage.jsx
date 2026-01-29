@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import API_URL from "../config";
 
 const BlogsPage = () => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showDropdown, setShowDropdown] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchBlogs();
@@ -91,7 +92,15 @@ const BlogsPage = () => {
                 <div style={styles.dropdownContent}>
                   <a href="#newsletters" style={styles.dropdownItem} onClick={() => setShowDropdown(false)}>Quarterly Newsletters</a>
                   <a href="#perspectives" style={styles.dropdownItem} onClick={() => setShowDropdown(false)}>Company Perspective</a>
-                  <Link to="/blogs" style={styles.dropdownItem} onClick={() => setShowDropdown(false)}>Blogs</Link>
+                  <div 
+                    style={styles.dropdownItem} 
+                    onClick={() => {
+                      setShowDropdown(false);
+                      navigate('/blogs');
+                    }}
+                  >
+                    Blogs
+                  </div>
                 </div>
               )}
             </div>

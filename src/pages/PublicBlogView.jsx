@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import API_URL from "../config";
 
 const PublicBlogView = () => {
@@ -8,6 +8,7 @@ const PublicBlogView = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchBlog();
@@ -103,7 +104,15 @@ const PublicBlogView = () => {
                 <div style={styles.dropdownContent}>
                   <a href="/#newsletters" style={styles.dropdownItem} onClick={() => setShowDropdown(false)}>Quarterly Newsletters</a>
                   <a href="/#perspectives" style={styles.dropdownItem} onClick={() => setShowDropdown(false)}>Company Perspective</a>
-                  <Link to="/blogs" style={styles.dropdownItem} onClick={() => setShowDropdown(false)}>Blogs</Link>
+                  <div 
+                    style={styles.dropdownItem} 
+                    onClick={() => {
+                      setShowDropdown(false);
+                      navigate('/blogs');
+                    }}
+                  >
+                    Blogs
+                  </div>
                 </div>
               )}
             </div>
