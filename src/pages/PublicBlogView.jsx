@@ -126,11 +126,6 @@ const PublicBlogView = () => {
             <a href="/#ipo" style={styles.navLink}>IPO Overview</a>
             <a href="/#careers" style={styles.navLink}>Careers</a>
             <a href="/#contact" style={styles.navLink}>Contact Us</a>
-            {isAdmin && (
-              <Link to="/cms" style={{background: "#c41e3a", color: "#fff", padding: "8px 16px", borderRadius: "6px", marginLeft: "10px", textDecoration: "none", fontSize: "14px"}}>
-                ← Admin
-              </Link>
-            )}
           </nav>
         </div>
       </header>
