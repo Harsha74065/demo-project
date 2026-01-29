@@ -96,15 +96,12 @@ const PublicBlogs = () => {
                 <div style={styles.dropdownContent}>
                   <a href="#newsletters" style={styles.dropdownItem} onClick={() => setShowDropdown(false)}>Quarterly Newsletters</a>
                   <a href="#perspectives" style={styles.dropdownItem} onClick={() => setShowDropdown(false)}>Company Perspective</a>
-                  <div 
-                    style={styles.dropdownItem} 
-                    onClick={() => {
-                      setShowDropdown(false);
-                      navigate('/blogs');
-                    }}
+                  <a 
+                    href="/blogs" 
+                    style={styles.dropdownItem}
                   >
                     Blogs
-                  </div>
+                  </a>
                 </div>
               )}
             </div>
