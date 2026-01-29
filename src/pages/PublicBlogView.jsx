@@ -101,38 +101,36 @@ const PublicBlogView = () => {
 
       {/* Blog Content */}
       <article style={styles.article}>
-        <div style={styles.articleLayout}>
-          {/* Image on left */}
-          {blog.imageUrl && (
-            <div style={styles.imageSection}>
-              <img src={getImageUrl(blog.imageUrl)} alt={blog.title} style={styles.image} />
-            </div>
-          )}
-          
-          {/* Title and meta on right */}
-          <div style={styles.titleSection}>
-            <h1 style={styles.title}>{blog.title}</h1>
-            <div style={styles.meta}>
-              <span>{formatDate(blog.createdAt)}</span>
-              <span style={styles.separator}>•</span>
-              <span>{Math.max(1, Math.round((blog.content?.length || 0) / 300))} min read</span>
-            </div>
+        {/* Full-width image at top */}
+        {blog.imageUrl && (
+          <div style={styles.heroImage}>
+            <img src={getImageUrl(blog.imageUrl)} alt={blog.title} style={styles.image} />
           </div>
-        </div>
+        )}
+        
+        {/* Title and meta */}
+        <div style={styles.contentWrapper}>
+          <h1 style={styles.title}>{blog.title}</h1>
+          <div style={styles.meta}>
+            <span>{formatDate(blog.createdAt)}</span>
+            <span style={styles.separator}>•</span>
+            <span>{Math.max(1, Math.round((blog.content?.length || 0) / 300))} min read</span>
+          </div>
 
-        {/* Blog body */}
-        <div style={styles.bodySection}>
-          <div
-            style={styles.body}
-            dangerouslySetInnerHTML={{ __html: blog.content }}
-          />
-        </div>
+          {/* Blog body */}
+          <div style={styles.bodySection}>
+            <div
+              style={styles.body}
+              dangerouslySetInnerHTML={{ __html: blog.content }}
+            />
+          </div>
 
-        {/* Back to insights */}
-        <div style={styles.backSection}>
-          <Link to="/#insights" style={styles.backButton}>
-            ← Back to Insights
-          </Link>
+          {/* Back to insights */}
+          <div style={styles.backSection}>
+            <Link to="/#insights" style={styles.backButton}>
+              ← Back to Insights
+            </Link>
+          </div>
         </div>
       </article>
 
@@ -277,35 +275,32 @@ const styles = {
 
   // Article
   article: {
-    maxWidth: "1200px",
+    maxWidth: "900px",
     margin: "0 auto",
     padding: "40px 24px",
   },
-  articleLayout: {
-    display: "grid",
-    gridTemplateColumns: "1fr 1fr",
-    gap: "40px",
-    alignItems: "start",
-    marginBottom: "40px",
-  },
-  imageSection: {
-    borderRadius: "12px",
+  heroImage: {
+    width: "100%",
+    maxHeight: "450px",
+    borderRadius: "16px",
     overflow: "hidden",
+    marginBottom: "32px",
   },
   image: {
     width: "100%",
-    height: "auto",
+    height: "100%",
+    objectFit: "cover",
     display: "block",
   },
-  titleSection: {
-    paddingTop: "20px",
+  contentWrapper: {
+    maxWidth: "100%",
   },
   title: {
-    margin: "0 0 20px 0",
-    fontSize: "42px",
+    margin: "0 0 16px 0",
+    fontSize: "36px",
     fontWeight: "700",
     color: "#1f2937",
-    lineHeight: "1.2",
+    lineHeight: "1.3",
   },
   meta: {
     display: "flex",
@@ -313,28 +308,30 @@ const styles = {
     gap: "12px",
     color: "#6b7280",
     fontSize: "15px",
+    marginBottom: "32px",
+    paddingBottom: "24px",
+    borderBottom: "1px solid #e5e7eb",
   },
   separator: {
     color: "#d1d5db",
   },
   bodySection: {
-    maxWidth: "800px",
-    margin: "0 auto",
-    paddingTop: "20px",
-    borderTop: "1px solid #e5e7eb",
+    paddingTop: "0",
   },
   body: {
-    fontSize: "17px",
-    lineHeight: "1.9",
+    fontSize: "18px",
+    lineHeight: "1.8",
     color: "#374151",
   },
   backSection: {
-    marginTop: "40px",
-    paddingTop: "20px",
+    marginTop: "48px",
+    paddingTop: "24px",
     borderTop: "1px solid #e5e7eb",
   },
   backButton: {
-    display: "inline-block",
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "8px",
     color: "#c41e3a",
     textDecoration: "none",
     fontWeight: "500",
