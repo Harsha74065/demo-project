@@ -76,11 +76,13 @@ const PublicBlogView = () => {
       <header style={styles.header}>
         <div style={styles.headerContent}>
           <Link to="/" style={styles.logoSection}>
-            <img
-              src="https://www.dfrpms.com/images/Dexter-Capital-Advisors-logo.png"
-              alt="Dexter Capital Advisors"
-              style={styles.logo}
-            />
+            <div style={styles.dexterLogo}>
+              <span style={{fontSize: "24px", color: "#1e40af"}}>🏛️</span>
+              <div style={{marginLeft: "8px"}}>
+                <div style={{fontSize: "14px", fontWeight: "700", color: "#1e40af"}}>DEXTER</div>
+                <div style={{fontSize: "9px", color: "#6b7280"}}>CAPITAL ADVISORS</div>
+              </div>
+            </div>
             <div style={styles.logoDivider}></div>
             <div style={styles.deltaLogo}>
               <span style={styles.deltaIcon}>&#9650;</span>
@@ -244,6 +246,10 @@ const styles = {
     alignItems: "center",
     gap: "16px",
     textDecoration: "none",
+  },
+  dexterLogo: {
+    display: "flex",
+    alignItems: "center",
   },
   logo: {
     height: "45px",
