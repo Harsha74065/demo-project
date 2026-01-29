@@ -7,7 +7,6 @@ import BlogEditor from "./cms/BlogEditor";
 import BlogDetail from "./cms/BlogDetail";
 import PublicBlogs from "./pages/PublicBlogs";
 import PublicBlogView from "./pages/PublicBlogView";
-import BlogsPage from "./pages/BlogsPage";
 import AdminUsers from "./pages/AdminUsers";
 
 function App() {
@@ -46,9 +45,7 @@ function App() {
     <Routes>
       {/* Public Routes - Anyone can access */}
       <Route path="/" element={<PublicBlogs />} />
-      <Route path="/blogs" element={<BlogsPage />} />
       <Route path="/blog/:id" element={<PublicBlogView />} />
-      <Route path="/insights" element={<PublicBlogs />} />
       
       {/* Admin Login */}
       <Route

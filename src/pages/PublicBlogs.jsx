@@ -94,7 +94,7 @@ const PublicBlogs = () => {
                 <div style={styles.dropdownContent}>
                   <a href="#newsletters" style={styles.dropdownItem}>Quarterly Newsletters</a>
                   <a href="#perspectives" style={styles.dropdownItem}>Company Perspective</a>
-                  <Link to="/blogs" style={styles.dropdownItem}>Blogs</Link>
+                  <a href="#insights" style={styles.dropdownItem}>Blogs</a>
                 </div>
               )}
             </div>
