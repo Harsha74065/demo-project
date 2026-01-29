@@ -154,7 +154,7 @@ const PublicBlogs = () => {
 
       {/* Insights / Blogs Section */}
       <section id="insights" style={styles.insightsSection}>
-        <h2 style={styles.sectionTitle}>Insights & Blogs</h2>
+        <h2 style={{...styles.sectionTitle, maxWidth: "1200px", margin: "0 auto 0"}}>Blogs</h2>
         
         {blogs.length === 0 ? (
           <div style={styles.noBlogs}>
@@ -184,6 +184,9 @@ const PublicBlogs = () => {
                   </p>
                   <div style={styles.blogMeta}>
                     <span>{formatDate(blog.createdAt)}</span>
+                    <span>{Math.max(1, Math.round((blog.content?.length || 0) / 300))} min read</span>
+                  </div>
+                  <div style={{ marginTop: "12px", textAlign: "right" }}>
                     <span style={styles.readMore}>Read More →</span>
                   </div>
                 </div>
@@ -437,7 +440,7 @@ const styles = {
 
   // Insights Section
   insightsSection: {
-    background: "#f9fafb",
+    background: "#FEE2E2",
     padding: "80px 24px",
   },
   noBlogs: {

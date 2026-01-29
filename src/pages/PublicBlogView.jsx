@@ -136,7 +136,7 @@ const PublicBlogView = () => {
             <div
               style={styles.body}
               dangerouslySetInnerHTML={{ __html: blog.content }}
-            />
+            />{13069399-9036-4463-804A-4C69C64F3064}.png
           </div>
 
           {/* Back to insights */}
