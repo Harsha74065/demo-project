@@ -159,49 +159,6 @@ const PublicBlogs = () => {
         </div>
       </section>
 
-      {/* Insights / Blogs Section */}
-      <section id="insights" style={styles.insightsSection}>
-        <h2 style={{...styles.sectionTitle, maxWidth: "1200px", margin: "0 auto 0"}}>Blogs</h2>
-        
-        {blogs.length === 0 ? (
-          <div style={styles.noBlogs}>
-            <p>No blogs published yet. Check back soon!</p>
-          </div>
-        ) : (
-          <div style={styles.blogsGrid}>
-            {blogs.map((blog) => (
-              <Link
-                key={blog._id}
-                to={`/blog/${blog._id}`}
-                style={styles.blogCard}
-              >
-                {blog.imageUrl && (
-                  <div style={styles.blogImageContainer}>
-                    <img
-                      src={getImageUrl(blog.imageUrl)}
-                      alt={blog.title}
-                      style={styles.blogImage}
-                    />
-                  </div>
-                )}
-                <div style={styles.blogContent}>
-                  <h3 style={styles.blogTitle}>{blog.title}</h3>
-                  <p style={styles.blogExcerpt}>
-                    {stripHtml(blog.content).substring(0, 120)}...
-                  </p>
-                  <div style={styles.blogMeta}>
-                    <span>{formatDate(blog.createdAt)}</span>
-                    <span>{Math.max(1, Math.round((blog.content?.length || 0) / 300))} min read</span>
-                  </div>
-                  <div style={{ marginTop: "12px", textAlign: "right" }}>
-                    <span style={styles.readMore}>Read More →</span>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        )}
-      </section>
 
       {/* Footer */}
       <footer style={styles.footer}>
